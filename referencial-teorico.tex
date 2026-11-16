@@ -1,0 +1,216 @@
+% Capítulo 2, versão 3.
+% Escrito na cadência indicada pela orientadora: definição, atividades, trabalhos que direcionam, fechamento.
+% Linhas iniciadas por "% PENDENTE" marcam fontes indicadas pela orientadora que ainda precisam ser lidas.
+
+\chapter{Referencial Teórico}
+\label{cap-referencial-teorico}
+
+Este capítulo reúne os conceitos e os trabalhos que fundamentam a proposta, com foco em segurança de software e ênfase em auditoria. A Seção~\ref{rt-2-1} define a auditoria de repositórios de software, apresenta suas atividades e a relaciona à prática DevSecOps. A Seção~\ref{rt-2-2} descreve a diversidade das automações, incluindo as plataformas \textit{low-code/no-code} e o \textit{Shadow AI}, que ajudam a entender o portfólio estudado. A Seção~\ref{rt-2-3} apresenta os sistemas multiagentes, e a Seção~\ref{rt-2-4} trata da comunicação entre os agentes. A Seção~\ref{rt-2-5} discute as regras e os registros que sustentam um parecer, e a Seção~\ref{rt-2-6} apresenta os trabalhos relacionados. Por fim, a Seção~\ref{rt-resumo} resume o capítulo.
+
+\section{Auditoria de Repositórios de Software}
+\label{rt-2-1}
+
+Uma auditoria de software é uma avaliação independente da conformidade de produtos e processos de software com os critérios aplicáveis, como normas, planos e procedimentos \cite{ieee1028}. Quando o objeto avaliado é um repositório, o exame recai sobre uma versão identificada do código e sobre os artefatos que a acompanham, como dependências, arquivos de configuração e documentação. Neste trabalho, esse exame é chamado de auditoria de repositório.
+
+Duas noções da literatura de auditoria descrevem o que esse exame produz. Evidências são registros, declarações de fatos ou outras informações pertinentes aos critérios da auditoria e que podem ser verificadas. Achados são os resultados da avaliação dessas evidências em relação aos critérios \cite{iso19011}. A norma trata de auditorias de sistemas de gestão, e as duas noções são adotadas aqui por analogia. Neste trabalho, as ocorrências apontadas pelas ferramentas são tratadas inicialmente como achados candidatos, sujeitos à verificação em relação às evidências e aos critérios aplicáveis. O relatório da ferramenta e o trecho de código apontado são as evidências que permitem conferi-lo.
+% PENDENTE: a orientadora indicou Oliveira (2026) para o termo "achado". Inserir a citação depois de ler a monografia.
+
+As subseções seguintes apresentam as atividades de uma auditoria de repositório. A última relaciona essas atividades à prática DevSecOps e ao uso que este trabalho faz delas.
+
+\subsection{Verificação de qualidade}
+\label{rt-2-1-1}
+
+A primeira atividade examina a qualidade do produto. A ISO/IEC 25010 define um modelo de qualidade composto por nove características, divididas em subcaracterísticas, que apoia a especificação de requisitos e a avaliação da qualidade ao longo do ciclo de vida \cite{iso25010}. Como o modelo reúne várias características, uma medida isolada não descreve a qualidade de um produto.
+
+Parte dessas características é examinada por métricas. A complexidade ciclomática, proposta por \citeonline{mccabe1976}, mede o número de caminhos linearmente independentes no grafo de fluxo de controle do programa. No SonarQube, o contador aumenta sempre que o fluxo de controle de uma função se divide, e o cálculo varia ligeiramente conforme a linguagem \cite{sonarMetrics99}. Por isso, uma medida deve ser lida na unidade em que foi calculada, e o valor agregado de um arquivo não descreve uma função em particular.
+
+\subsection{Análise de código e de componentes}
+\label{rt-2-1-2}
+
+A segunda atividade procura problemas de segurança no código. O \textit{Secure Software Development Framework} (SSDF), do NIST, recomenda revisar ou analisar o código para identificar vulnerabilidades e verificar a conformidade com os requisitos de segurança. Recomenda também registrar e triar os problemas encontrados \cite{nistSsdf}. Essa análise pode ser estática ou dinâmica. A análise estática raciocina sobre o código como está escrito, sem depender de sua execução, e a análise dinâmica se baseia na execução do programa \cite{blackIr8397}.
+
+Os achados da análise estática precisam ser examinados antes de sustentar uma conclusão. Em entrevistas com 20 desenvolvedores, \citeonline{johnson2013} identificaram os falsos positivos e a forma de apresentação dos alertas entre as barreiras ao uso dessas ferramentas. Um alerta de ferramenta, portanto, indica um ponto a examinar e não constitui, por si só, um problema confirmado.
+
+A terceira atividade trata dos componentes de terceiros. As ferramentas de análise de composição de software (\textit{Software Composition Analysis}, SCA) ajudam a identificar as bibliotecas e os pacotes que o software utiliza e a apontar os que estão desatualizados ou têm vulnerabilidades conhecidas. Como uma nova vulnerabilidade pode ser divulgada a qualquer momento, os componentes precisam ser acompanhados continuamente \cite{blackIr8397}.
+
+\subsection{DevSecOps e interpretação dos resultados}
+\label{rt-2-1-3}
+
+Essas atividades costumam ser reunidas na prática DevSecOps, isto é, na integração de princípios e práticas de segurança ao DevOps \cite{rajapakse2022}. Nessa prática, as etapas de construção e entrega do software são organizadas em esteiras de integração e entrega contínuas (CI/CD) \cite{chandramouli2024}.
+
+A literatura registra dificuldades nessa integração. Em uma revisão sistemática de 54 estudos, \citeonline{rajapakse2022} observam que a segurança é tradicionalmente tratada como requisito não funcional, verificada sobre uma versão já pronta, e que atividades como a revisão de código exigem esforço manual substancial. Os autores também relatam o tempo consumido pela avaliação manual dos falsos positivos das ferramentas. Em uma pesquisa com 88 profissionais de organizações brasileiras, \citeonline{canedo2026} apontam a automação insuficiente das esteiras de CI/CD entre os desafios do desenvolvimento seguro.
+
+Um trabalho próximo desta proposta é o de \citeonline{zuev2025}, que reúnem os relatórios de análises estática e dinâmica em um módulo de apoio à decisão sobre a segurança do código. Os autores argumentam que, diante de grandes volumes de dados, o fator humano pode levar a erros. Relatam ainda um experimento com cerca de 100 varreduras, no qual o módulo tornou mais eficiente a análise das vulnerabilidades identificadas.
+
+Neste trabalho, a auditoria de repositório reúne essas atividades. As ferramentas produzem achados de qualidade, de segurança e de dependências, e as evidências permitem conferi-los. Falta, porém, saber o que cada achado significa para a organização. Na metodologia de avaliação de riscos da OWASP, o impacto para o negócio é, em última análise, o fator mais importante \cite{owaspRiskRating}. Por isso, a proposta acrescenta aos achados o contexto documental, isto é, as informações registradas sobre a finalidade e a criticidade do componente examinado. Achados, evidências e contexto documental são reunidos em um parecer, documento que apoia a decisão do responsável humano e não a substitui.
+
+\section{Diversidade das Automações, \textit{Low-code/No-code} e \textit{Shadow AI}}
+\label{rt-2-2}
+
+O contexto documental importa ainda mais quando as automações têm origens diferentes. O desenvolvimento pode envolver profissionais de software e usuários de outras áreas da organização. As plataformas \textit{low-code/no-code} (LCNC) reduzem a necessidade de programação manual e ampliam a participação desses usuários, prática associada ao \textit{citizen development}. Essa adoção traz benefícios e desafios organizacionais e técnicos, incluindo questões de segurança e governança \cite{ajimati2025}.
+
+Outro fator é o \textit{Shadow AI}, isto é, o uso de inteligência artificial fora das estruturas de governança aprovadas pela organização. Esse uso envolve questões de privacidade dos dados e de responsabilidade sobre a tecnologia \cite{silic2025}. No contexto brasileiro, profissionais ouvidos por \citeonline{canedo2026} relataram preocupação com o uso de IA fora da supervisão institucional.
+
+O desenvolvimento por usuários de negócio e o uso não autorizado de IA são fenômenos distintos, e a ocorrência de cada um precisa ser identificada nos registros da organização. Neste trabalho, a presença dessas práticas no portfólio da Empresa A será caracterizada com base nos registros institucionais disponíveis. Qualquer que seja a origem de uma automação, interpretar seus achados exige conhecer a finalidade do componente, e essa necessidade motiva o agente de Requisitos e Documentação, apresentado na próxima seção.
+
+\section{Sistemas Multiagentes}
+\label{rt-2-3}
+
+A auditoria de repositório envolve atividades distintas, e cada uma pede um tipo de conhecimento. Um sistema multiagente permite distribuir essas atividades entre participantes especializados. Esta seção define agente e sistema multiagente, apresenta um modelo usado nos trabalhos relacionados e delimita o papel do modelo de linguagem na proposta.
+
+\subsection{Agentes de software e responsabilidades}
+\label{rt-2-3-1}
+
+Um agente de software pode ser caracterizado por autonomia, capacidade de interação social, reação às mudanças percebidas e iniciativa orientada a objetivos \cite{wooldridge1995}. Um sistema multiagente (SMA) reúne agentes que atuam e interagem em um ambiente para alcançar objetivos individuais ou coletivos \cite{wooldridge2009,lazarin2025}. Essas interações podem envolver cooperação, coordenação e negociação \cite{wooldridge2009}.
+
+A combinação entre agentes e computação \textit{peer-to-peer} (P2P) é discutida na literatura como promissora \cite{moro2003}. \citeonline{flores2005} apresenta características das redes P2P e questões de segurança e mobilidade. Essas referências contextualizam a proposta; a comunicação entre especialistas e a consolidação pelo Auditor constituem escolhas arquiteturais deste trabalho.
+\citeonline{wang2026} apresentam a Internet de Agentes como uma infraestrutura para interconexão, descoberta dinâmica e orquestração colaborativa de agentes heterogêneos. A revisão discute protocolos de comunicação, associação de tarefas e mecanismos de consenso e resolução de conflitos, oferecendo um contexto mais amplo para a integração entre agentes.
+% Moro (2003) e Flores (2005) não são usados para afirmar preferência geral por controle semicentralizado.
+
+Nesta proposta, cada atividade da auditoria fica com um agente especialista. Há um agente de Qualidade, um de Segurança e um de Requisitos e Documentação. Um agente Orquestrador distribui as tarefas, e um agente Auditor consolida as conclusões. Os papéis são detalhados no capítulo da Proposta.
+
+\subsection{Modelos de agentes}
+\label{rt-2-3-2}
+
+Parte dos trabalhos relacionados descreve seus agentes pelo modelo \textit{Belief-Desire-Intention} (BDI). Nesse modelo, crenças representam o conhecimento e as percepções do agente, desejos representam seus objetivos, e intenções representam os compromissos assumidos com os objetivos selecionados. Planos descrevem as maneiras de persegui-los \cite{raoGeorgeff1995,lazarin2025}.
+
+\citeonline{yesil2026} aplicam agentes BDI ao controle de acesso a documentos. As verificações especializadas são distribuídas entre agentes, e a lógica de autorização é expressa em planos que podem ser inspecionados. Extração de informação, verificação de políticas e decisão final ficam, assim, com participantes diferentes.
+
+Esta proposta aproveita dessa literatura a especialização dos participantes e a consolidação explícita dos resultados. Não se adota uma arquitetura cognitiva completa.
+
+\subsection{Modelos de linguagem em agentes}
+\label{rt-2-3-3}
+
+Um modelo de linguagem pode servir a um agente como recurso para interpretar textos. No trabalho de \citeonline{yesil2026}, modelos de linguagem extraem informações dos documentos, e a decisão de autorização fica em uma camada de regras explícitas. Interpretar o conteúdo e decidir são, portanto, funções separadas.
+
+Esta pesquisa segue a mesma separação. O modelo de linguagem é usado apenas pelo agente de Requisitos e Documentação, que consulta os documentos do projeto para responder às perguntas dos especialistas sobre um achado. A resposta fornece o contexto documental do achado. Ela deve identificar os documentos consultados, a versão ou data disponível e os trechos usados, e deve informar quando esses dados não existem. Os demais agentes, inclusive o Auditor, operam por regras explícitas.
+
+Uma menção genérica a uma funcionalidade em um documento não indica quais arquivos a implementam, e uma criticidade declarada é diferente de uma criticidade inferida. Por isso, os campos das respostas e as regras de associação entre documentos e componentes são detalhados no capítulo da Proposta.
+
+\section{Comunicação e Cooperação entre Agentes}
+\label{rt-2-4}
+
+Agentes especializados precisam trocar informações para concluir suas análises. Esta seção apresenta como as mensagens são representadas e define a comunicação P2P e a cooperação adotadas neste trabalho.
+
+\subsection{Mensagens, finalidade e transporte}
+\label{rt-2-4-1}
+
+Para que uma mensagem seja interpretada, importam o conteúdo transmitido e a finalidade da comunicação. Linguagens de comunicação de agentes, como KQML e FIPA-ACL, representam essas finalidades. Elas permitem distinguir, por exemplo, o fornecimento de uma informação de uma consulta dirigida a outro participante \cite{finin1994,fipaACL2002,lazarin2025}.
+
+A representação da mensagem e o seu transporte são aspectos distintos. \citeonline{lazarin2025} transportam mensagens KQML por protocolos de correio eletrônico e traduzem os elementos entre a linguagem dos agentes e o formato de envio. O canal, portanto, pode variar, desde que os participantes consigam interpretar a mensagem. Neste trabalho, o formato das mensagens e o protocolo de transporte são especificados nos capítulos de Suporte Tecnológico e Proposta.
+
+\subsection{Interações P2P e reavaliação das conclusões}
+\label{rt-2-4-2}
+
+Neste trabalho, a comunicação P2P é a troca direta de uma pergunta e de uma resposta entre agentes especialistas. Uma pergunta do agente de Segurança pode ser dirigida ao de Qualidade ou ao de Requisitos e Documentação, e a resposta retorna ao solicitante. O termo P2P designa aqui a interação lógica entre os especialistas. O transporte previsto utiliza SPADE sobre XMPP e um servidor de mensagens \cite{spadeDocs,rfc6120}; portanto, essa interação não implica uma infraestrutura de rede sem servidores. O Orquestrador organiza as tarefas, e o Auditor centraliza a consolidação das conclusões.
+
+A cooperação, a coordenação e a negociação fazem parte do contexto de interação dos sistemas multiagentes \cite{lazarin2025}. Aqui, a cooperação toma a forma de uma consulta. Um especialista pede uma informação que outro pode fornecer e examina sua pertinência antes de concluir a própria análise. A resposta pode sustentar a manutenção ou a revisão da conclusão.
+
+O significado dessas trocas depende do contexto. Ao estudar bots da Wikipédia, \citeonline{geiger2017} mostraram que interações antes classificadas como conflitos eram, em muitos casos, atividades rotineiras e colaborativas. Por isso, as perguntas, as respostas e as conclusões serão registradas, o que permite identificar quais informações foram compartilhadas e como entraram na análise.
+
+O termo negociação não é usado para essas consultas. Ele fica reservado a mecanismos com propostas, critérios e procedimentos de resolução de divergências, que não fazem parte desta proposta.
+
+\section{Governança e Apoio à Decisão}
+\label{rt-2-5}
+
+As conclusões dos agentes só apoiam uma decisão se forem consolidadas por critérios conhecidos e registradas de modo verificável. Esta seção trata das regras, do parecer e dos registros.
+
+\subsection{Políticas, regras e responsabilidades}
+\label{rt-2-5-1}
+
+A governança de projetos de software torna explícitos os papéis, as responsabilidades e os procedimentos pelos quais as decisões são tomadas. \citeonline{ait2025} propõem uma linguagem específica de domínio para representar participantes, papéis, escopos e procedimentos de governança de forma estruturada. Em uma auditoria, uma política estruturada permite relacionar cada achado a um critério identificável.
+
+Em sistemas multiagentes normativos, as regras podem representar obrigações, permissões e proibições. Processar essas normas é diferente de aplicar sanções, que exigem representar consequências e mecanismos próprios de execução \cite{yan2025}.
+
+Nesta proposta, as regras do Auditor são definidas e versionadas, com registro de sua origem e de seu escopo. Uma diretriz escrita em um documento corporativo não é, por si só, uma regra executável. Por isso, as regras demonstrativas, elaboradas para exercitar a solução, são distinguidas das regras derivadas de políticas institucionais e não representam políticas oficiais da organização.
+
+\subsection{Pareceres e delimitação da decisão}
+\label{rt-2-5-2}
+
+O apoio à decisão organiza informações e critérios para que o responsável decida com base em material que pode ser examinado. No trabalho de \citeonline{zuev2025}, a coleta dos resultados, seu processamento e a recomendação ao usuário são etapas separadas, e varreduras malsucedidas ou em número insuficiente limitam o que se pode concluir.
+
+Neste trabalho, o parecer reúne os achados, as conclusões dos especialistas, o contexto documental e as regras que originaram cada ponto de atenção. O Auditor consolida esses elementos por regras explícitas e sinaliza pontos de atenção e lacunas, mas não atribui veredito. A classificação do repositório cabe ao responsável humano. A relação entre as justificativas, as evidências e os pontos de atenção será objeto de apreciação humana estruturada, definida na Metodologia.
+
+\subsection{Proveniência e registro do procedimento}
+\label{rt-2-5-3}
+
+Para que um parecer possa ser revisado, é preciso saber de onde veio cada informação. A proveniência é a informação sobre as entidades, as atividades e as pessoas envolvidas na produção de um dado, e pode ser usada para avaliar sua qualidade, confiabilidade ou credibilidade \cite{groth2013}. A organização de tarefas, a vinculação às fontes e o registro da execução também são discutidos em propostas de fluxos governáveis e auditáveis \cite{rousek2026}.
+
+Os registros permitem inspecionar o procedimento, mas não asseguram a correção de cada interpretação. Fluxos apoiados por modelos de linguagem podem produzir afirmações sem suporte, e por isso a ligação entre evidência, processamento e resultado precisa ser preservada \cite{rousek2026}. \citeonline{sowan2026} reconhece limite semelhante ao afirmar que a utilidade de suas trilhas de decisão para conformidade e responsabilização ainda depende de validação.
+
+Neste trabalho, serão conservadas as relações entre o resultado original da ferramenta, a interpretação do especialista, o contexto recebido por P2P e a conclusão encaminhada ao Auditor, bem como a regra que originou cada sinalização. Quando o modelo de linguagem participa, os registros incluem os documentos consultados, os trechos usados, as entradas, as respostas e a identificação do modelo.
+
+\section{Trabalhos Relacionados}
+\label{rt-2-6}
+
+As seções anteriores apresentaram os conceitos que sustentam a proposta. Esta seção examina como trabalhos da literatura tratam partes do problema. Para cada trabalho, indica-se o elemento que interessa à proposta e a diferença em relação a ela. A proximidade temática não significa equivalência de domínio, de método ou de resultado.
+
+\subsection{Apoio à decisão sobre evidências de software}
+\label{rt-2-6-1}
+
+\citeonline{zuev2025} apresentam uma abordagem híbrida que utiliza resultados de análises estática e dinâmica em um módulo de apoio à decisão sobre segurança de código. O trabalho relaciona relatórios de vulnerabilidades, critérios de processamento e uma recomendação de incorporação de código. Para esta pesquisa, interessa a passagem dos resultados das ferramentas para uma decisão fundamentada. A solução descrita não estabelece a troca P2P entre especialistas de auditoria, que é o foco desta proposta.
+
+GateLens, apresentado por \citeonline{khoee2026}, trata da análise de dados de \textit{releases} de software automotivo. A arquitetura utiliza álgebra relacional como representação intermediária entre consultas em linguagem natural e código executável. Interessa à pesquisa a possibilidade de inspecionar as transformações entre a entrada e o resultado. A unidade avaliada, porém, é a consulta sobre dados tabulares, e a solução não depende de orquestração multiagente.
+
+\subsection{Comunicação e consolidação por agentes especializados}
+\label{rt-2-6-2}
+
+\citeonline{lazarin2025} desenvolvem uma arquitetura de comunicação baseada em Jason \cite{bordini2007} para troca de mensagens KQML por IMAP e SMTP. Interessa à pesquisa a representação da intenção comunicativa e a integração entre agentes e um meio de transporte. O domínio de agentes embarcados e de interação por correio eletrônico é distinto da auditoria de repositórios, e o trabalho não define um protocolo para interpretar achados de ferramentas.
+
+\citeonline{yesil2026} apresentam uma arquitetura BDI para controle de acesso em recuperação aumentada por geração multimodal, técnica em que o modelo responde com apoio em documentos recuperados. Verificações textuais e visuais produzem sinais de autorização, que são combinados por um agente de decisão. A separação entre extração, verificação e consolidação serve de referência para organizar responsabilidades. A combinação por disjunção lógica responde ao problema de autorização tratado pelos autores, e a auditoria requer critérios próprios de consolidação.
+
+\subsection{Políticas e fluxos governáveis}
+\label{rt-2-6-3}
+
+\citeonline{ait2025} propõem uma linguagem específica de domínio para representar participantes, papéis, escopos e procedimentos de governança em projetos de software. A proposta inclui um mecanismo de decisão e uma prova de conceito. Interessa à pesquisa a forma como uma regra é ligada aos participantes e ao contexto em que deve ser aplicada. O artigo não avalia pareceres de auditoria de repositórios.
+
+\citeonline{yan2025} tratam da representação de normas e sanções em uma arquitetura normativa BDI. A distinção entre identificar conformidade, decidir e aplicar consequências ajuda a delimitar o Auditor, que emite um parecer e não executa consequências.
+
+\citeonline{rousek2026} apresenta um \textit{framework} conceitual para fluxos governáveis de apoio à decisão em defesa, com decomposição de tarefas, proveniência e controle delimitado. A obra oferece elementos para especificar registros e responsabilidades e declara não realizar validação empírica. Ela é usada aqui como referência conceitual, preservada a diferença entre o domínio de defesa e os repositórios de automações.
+
+\subsection{Separação de funções e registros de decisão}
+\label{rt-2-6-4}
+
+\citeonline{mosciatti2026} desenvolvem uma arquitetura multiagente para operações de segurança de dispositivos e aplicações com interfaces web, demonstrada na rotação de credenciais. Os agentes têm funções e permissões delimitadas, incluindo uma fase própria de validação do resultado. Interessa à pesquisa essa organização das responsabilidades e das verificações internas. O estudo executa operações de segurança, e não a análise de repositórios.
+
+\citeonline{sowan2026} apresenta AEGIS-Chain, uma arquitetura de apoio à decisão em cadeias de suprimentos com etapas de processamento, limites operacionais, escalonamento humano e trilhas de decisão. Interessa à pesquisa o registro do processo e a identificação de situações que pedem encaminhamento a uma pessoa. A avaliação por simulação e o domínio de cadeias de suprimentos limitam a transferência dos resultados.
+
+\subsection{Síntese e posicionamento da proposta}
+\label{rt-2-6-5}
+
+O Quadro~\ref{quadro-trabalhos-relacionados} resume o elemento de cada trabalho que interessa à proposta e a distinção em relação a ela.
+
+\begin{table}[p]
+\centering
+\caption{Síntese dos trabalhos relacionados}
+\label{quadro-trabalhos-relacionados}
+\begingroup
+\footnotesize
+\SingleSpacing
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\hline
+\textbf{Trabalho} & \textbf{Elemento pertinente} & \textbf{Distinção em relação à proposta} \\ \hline
+\citeonline{zuev2025} & Integração de resultados de análises com apoio à decisão & Não estabelece o P2P entre especialistas de auditoria \\ \hline
+\citeonline{khoee2026} & Representação intermediária inspecionável entre linguagem natural e resultado & Trata de consultas sobre \textit{releases}, sem depender de orquestração multiagente \\ \hline
+\citeonline{lazarin2025} & Mensagens com finalidade comunicativa explícita & Emprega Jason, KQML e transporte por correio eletrônico em outro domínio \\ \hline
+\citeonline{yesil2026} & Verificações especializadas e consolidação por regras & Trata de autorização multimodal, e sua regra de fusão não define a política do Auditor \\ \hline
+\citeonline{ait2025} & Representação de papéis, escopo e procedimentos decisórios & Propõe uma linguagem de governança, sem avaliar os pareceres deste domínio \\ \hline
+\citeonline{yan2025} & Representação de normas e consequências & Implementa capacidades normativas e sanções, que não se confundem com emitir um parecer \\ \hline
+\citeonline{rousek2026} & Proveniência e controle delimitado de fluxos & Apresenta um \textit{framework} conceitual, sem validação empírica \\ \hline
+\citeonline{mosciatti2026} & Separação de funções e permissões & Executa operações de segurança por interfaces web, em vez de analisar repositórios \\ \hline
+\citeonline{sowan2026} & Trilhas de decisão e encaminhamento de situações & Avalia simulações de cadeias de suprimentos, com limites declarados para a utilidade dos registros \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
+
+A proposta articula esses elementos na auditoria de repositórios de automações. Os especialistas examinam os achados das ferramentas e trocam informações por comunicação P2P. O agente de Requisitos e Documentação usa um modelo de linguagem para obter o contexto documental dos componentes analisados e conserva os trechos que sustentam suas respostas. O Auditor consolida as conclusões por regras explícitas e produz um parecer, que sinaliza pontos de atenção e lacunas e apoia a classificação feita pelo responsável humano.
+
+\section{Resumo do Capítulo}
+\label{rt-resumo}
+
+A auditoria de repositório avalia uma versão identificada do código e de seus artefatos. Suas atividades produzem achados de qualidade, de segurança e de dependências, e as evidências permitem conferi-los. O contexto documental indica o que cada achado significa para a organização, e o parecer reúne esses elementos para apoiar a decisão do responsável humano.
+
+Os sistemas multiagentes distribuem essas atividades entre especialistas, que trocam informações por comunicação P2P. Um modelo de linguagem apoia apenas a obtenção do contexto documental. As regras explícitas do Auditor e os registros de proveniência permitem revisar como cada parecer foi produzido. As tecnologias que materializam esses elementos são descritas no capítulo de Suporte Tecnológico, os procedimentos de coleta e análise, na Metodologia, e os papéis, os fluxos e as regras da solução, no capítulo da Proposta.

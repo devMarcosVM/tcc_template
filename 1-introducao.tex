@@ -1,0 +1,129 @@
+% Capítulo 1, versão 4 (15 nov. 2026).
+% Mudanças em relação ao PDF atual estão marcadas com "% V4".
+% Linhas "% PENDENTE" dependem de leitura de fonte ou de decisão com a orientadora.
+% Chaves presumidas (confira no seu .bib): owaspDevSecOps, flores2005, morshed2009, zangirolami2018, runeson2009.
+
+\chapter{Introdução}
+\label{cap-introducao}
+
+O presente trabalho está focado na Engenharia de Software, mais especificamente na área de segurança de software. Propõe-se o uso de Sistemas Multiagentes para viabilizar uma arquitetura P2P (\textit{Peer-to-Peer}) de agentes especialistas, semicentralizada via um Agente Auditor, para lidar com um portfólio de automações no contexto de práticas DevSecOps (\textit{Development, Security and Operations}).
+
+Este capítulo está organizado em seis seções. A Contextualização (Seção~\ref{intro-contextualizacao}) situa o problema e o recorte de escopo tratado no trabalho. A Questão de Pesquisa (Seção~\ref{intro-questao}) orienta a investigação. A Justificativa (Seção~\ref{intro-justificativa}) apresenta a relevância da proposta. Os Objetivos (Seção~\ref{intro-objetivos}) estão divididos em objetivo geral e objetivos específicos. A Metodologia (Seção~\ref{intro-metodologia}) oferece uma visão geral da condução da pesquisa. Por fim, a Organização da Monografia (Seção~\ref{intro-organizacao}) descreve o conteúdo dos demais capítulos.
+
+\section{Contextualização}
+\label{intro-contextualizacao}
+
+A segurança de software é primordial para as organizações que dependem de sistemas de informação e automações em suas atividades. Vulnerabilidades no código ou em seus componentes podem comprometer dados e serviços, o que torna necessária a identificação de falhas ao longo do ciclo de vida das soluções. Para integrar essas verificações ao desenvolvimento e à entrega de software, a abordagem DevSecOps articula desenvolvimento, segurança e operações \cite{owaspDevSecOps}. As esteiras de integração e entrega contínuas, conhecidas pela sigla CI/CD, organizam etapas como construção, teste, empacotamento e implantação, nas quais podem ser incorporados controles sobre o código e suas dependências \cite{chandramouli2024}.
+
+% V4: fonte indicada pela orientadora. Conteúdo conferido na versão arXiv (seção 1 do artigo).
+Essa integração ainda exige esforço das pessoas. Segundo \citeonline{rajapakse2022}, a segurança é tradicionalmente tratada como requisito não funcional, verificada sobre uma versão já pronta, e atividades como a revisão de código demandam esforço manual substancial. As ferramentas de análise produzem evidências, mas a interpretação dessas evidências continua a cargo dos responsáveis humanos, que decidem sobre os riscos encontrados.
+
+Em organizações com um portfólio de projetos e automações, esse acompanhamento envolve analisar evidências de diferentes repositórios e considerar as particularidades de cada solução. Os relatórios técnicos precisam ser relacionados à finalidade da aplicação, às dependências utilizadas e às políticas pertinentes, para que os achados possam orientar uma recomendação, aqui denominada parecer. Quando esse acompanhamento se apoia apenas na análise humana, o esforço tende a ser significativo. \citeonline{zuev2025} discutem o aumento da carga cognitiva associado à grande quantidade de informações providas por diversas ferramentas e às restrições de tempo para avaliar riscos de segurança. O problema de interesse deste trabalho consiste em articular esses resultados, de maneira que o responsável humano possa examinar a fundamentação do parecer produzido.
+
+A diversidade das formas de criação das automações também compõe esse contexto. Plataformas \textit{low-code/no-code} (LCNC) permitem construir aplicações e automações com pouco ou nenhum código, e favorecem o \textit{citizen development}, isto é, a participação de usuários de negócio na criação de soluções. A adoção dessas práticas envolve benefícios e desafios organizacionais e técnicos, incluindo questões de segurança e governança \cite{ajimati2025}. Quando as soluções incorporam inteligência artificial fora das estruturas de governança aprovadas pela organização, tem-se o fenômeno denominado \textit{Shadow AI}, que envolve questões de privacidade dos dados e de responsabilidade sobre o uso da tecnologia \cite{silic2025}. Essa variedade de autores, práticas e procedimentos de revisão amplia a heterogeneidade do portfólio e torna mais relevante o acompanhamento contínuo dos repositórios.
+
+Diante do esforço que esse acompanhamento exige das pessoas, são desejáveis soluções de apoio à análise. Nesse contexto, os Sistemas Multiagentes (SMA) permitem organizar esse apoio por meio de agentes com responsabilidades especializadas \cite{wooldridge2009}. A comunicação estruturada permite solicitar informações e compartilhar evidências \cite{lazarin2025}, enquanto a definição explícita de papéis e procedimentos decisórios fornece uma base para organizar a colaboração humano-agente \cite{ait2025}.
+
+Na proposta deste trabalho, os agentes especialistas analisarão segurança, qualidade de código e dependências dos repositórios. Um agente de Requisitos e Documentação fará uso de um modelo de linguagem para interpretar os artefatos corporativos, fornecendo contexto aos demais agentes envolvidos na solução.
+
+% V4: a frase sobre Flores agora diz o que a fonte afirma (seção 2.3, p. 17-18 da monografia).
+% PENDENTE: Wang et al. (2026), indicado pela orientadora para "SMA é útil em situações descentralizadas". O artigo não abriu pelo link. Ler pelo IEEE Xplore da UnB e inserir a frase antes desta.
+Uma solução orientada a agentes demanda uma arquitetura compatível com a distribuição das responsabilidades. A combinação dos paradigmas de agentes e de computação \textit{Peer-to-Peer} (P2P) é discutida por \citeonline{moro2003}. Em redes P2P, \citeonline{flores2005} distingue a organização descentralizada, na qual todos os nós têm a mesma importância, da organização semicentralizada, na qual um nó central ou alguns nós concentram as informações de controle. Neste trabalho, adota-se a comunicação P2P entre os especialistas, que poderão solicitar esclarecimentos e examinar informações de outras dimensões do problema antes de encaminhar suas conclusões. O Agente Auditor responde pelo controle semicentralizado. Ele consolida, por regras explícitas, um parecer que relaciona os pontos de atenção em segurança às evidências consideradas pelos demais agentes e identifica as situações que demandam encaminhamento ao responsável humano.
+
+Dada a abrangência de cenários que demandam soluções de segurança, o recorte deste trabalho consiste em uma solução piloto, concebida como prova de conceito (PoC) de uma arquitetura multiagente P2P semicentralizada, para apoiar a auditoria de repositórios do portfólio de automações de uma empresa específica, doravante referenciada como Empresa A. Essa denominação foi adotada para preservar a organização.
+% PENDENTE (pedido da orientadora): descrever o porte da Empresa A em uma frase. Exemplo: "Trata-se de uma organização de porte X, com Y colaboradores e um portfólio de Z automações, sediada no Distrito Federal." Preencher só com dados autorizados.
+
+A auditoria compreenderá a coleta e a interpretação de evidências de segurança, de qualidade de código e de dependências, em versões identificadas de repositórios autorizados. O foco da investigação será a articulação dessas evidências entre os agentes especialistas e a produção de pareceres fundamentados pelo Auditor, como apoio aos responsáveis humanos na tarefa de acompanhar o portfólio.
+
+Ao longo do projeto piloto, será conduzido um acompanhamento observacional e descritivo, com registro dos achados, das interações entre agentes especialistas, das justificativas e dos pareceres. Serão examinadas a correspondência dos achados e do contexto documental com suas fontes, a vinculação das justificativas às evidências e às regras aplicadas e as informações incorporadas pelas interações P2P. A análise será complementada por uma apreciação humana estruturada quanto à clareza, à coerência e à fundamentação dos pareceres. A análise descreverá as contribuições e os limites observados, sem estimar efeitos causais.
+
+% V4: elo para o Cap. 2, pedido pela orientadora.
+Os registros produzidos serão confrontados com a literatura e com as boas práticas adotadas na comunidade de segurança de software. Essas fontes são apresentadas no Capítulo~\ref{cap-referencial-teorico}.
+
+\section{Questão de Pesquisa}
+\label{intro-questao}
+
+Para delimitar o escopo e guiar a investigação, formula-se a seguinte questão de pesquisa.
+
+\begin{quote}
+\textit{Como uma arquitetura multiagente, com comunicação P2P entre agentes especialistas e consolidação semicentralizada por um Agente Auditor, contribui para a produção de pareceres fundamentados em evidências na auditoria de repositórios de um portfólio de automações, no contexto de práticas DevSecOps?}
+\end{quote}
+% PENDENTE: a orientadora propôs duas redações e pediu que você escolha uma. A redação acima é a sua, com a palavra "semicentralizada" acrescentada para alinhar com a abertura do capítulo. Ela equivale à primeira opção da orientadora (ênfase no SMA).
+
+\section{Justificativa}
+\label{intro-justificativa}
+
+% V4: o primeiro parágrafo era uma frase só. Foi dividido em três.
+O trabalho justifica-se pela dificuldade de acompanhar portfólios de projetos e automações quando a análise dos resultados das ferramentas recai exclusivamente sobre pessoas. Nessa situação, é preciso organizar as evidências técnicas em um processo de apoio à decisão. Esse processo deve permitir identificar a origem dos achados, as políticas aplicadas e as responsabilidades dos participantes.
+
+% V4: Paulo (2026), indicada pela orientadora. Conferido APENAS o resumo, na listagem do repositório do Politécnico do Porto. Leia a dissertação antes da entrega.
+A dificuldade também aparece em trabalhos recentes. \citeonline{paulo2026} observa que a documentação de \textit{releases} em ambientes DevSecOps empresariais sustenta decisões de aprovação, de auditoria e de rastreabilidade das alterações. Segundo a autora, esse processo é feito, na maior parte, de forma manual, o que o torna oneroso, inconsistente e difícil de auditar. Com base em uma revisão sistemática da literatura, a autora afirma não ter encontrado abordagem que reúna, em um único fluxo, a geração automática, a validação e a rastreabilidade dessa documentação.
+
+A literatura oferece elementos para esse processo. \citeonline{zuev2025} oferecem uma referência para transformar resultados de análise em informação para decisão. \citeonline{ait2025} e \citeonline{yan2025} contribuem para discutir políticas explícitas e raciocínio normativo. \citeonline{mosciatti2026} e \citeonline{sowan2026} oferecem elementos para delimitar permissões, registros e apreciação humana em seus respectivos domínios. A presente proposta procura combinar esses elementos na auditoria de repositórios, sem pressupor eficácia já demonstrada ou ausência de soluções equivalentes na literatura.
+
+A comunicação P2P permitirá que um agente especialista solicite esclarecimentos sobre evidências de outra dimensão, pois a interpretação de um achado pode depender dessas evidências. Um alerta de segurança, por exemplo, pode ser lido de modo diferente quando o agente de Qualidade informa que o mesmo módulo concentra alta complexidade, ou ainda quando o agente de Requisitos e Documentação indica a finalidade e a criticidade documentadas do componente. Nesse caso, deve-se registrar se a interação manteve a conclusão original ou a alterou diante das informações recebidas.
+
+% V4: fonte indicada pela orientadora, conferida no texto do artigo.
+Esse registro facilita a revisão humana e fica disponível para consultas futuras. A necessidade é reconhecida na literatura recente sobre agentes de inteligência artificial em esteiras DevSecOps. \citeonline{carvalho2026} defendem que cada registro de vulnerabilidade conserve sua origem, a versão da ferramenta, o \textit{commit} e a evidência reproduzível, e que a aceitação de riscos permaneça com uma pessoa identificável. A análise descritiva deste trabalho examinará esse processo, sem assumir que toda troca de mensagens melhora o parecer.
+
+A aplicação prevista abrange repositórios do portfólio de automações da Empresa A. Esse portfólio reúne automações de origens diversas. A presença de automações desenvolvidas por usuários de negócio, de soluções construídas com plataformas \textit{low-code/no-code} e de situações de \textit{Shadow AI} será caracterizada com base nos registros institucionais disponíveis. Trata-se de um objeto de estudo alinhado ao contexto de organizações brasileiras. Em pesquisa com 88 profissionais, \citeonline{canedo2026} registram maturidade desigual em DevSecOps e, nas respostas abertas, a preocupação com o uso de inteligência artificial fora do controle institucional.
+
+O uso dos repositórios depende de autorização institucional e de condições de divulgação.
+% PENDENTE (texto da orientadora, confirmar se é verdade hoje): "O que já está sendo negociado pelo autor junto à Empresa A. Até o momento, há indicação de abertura suficiente para a condução do trabalho."
+
+Do ponto de vista acadêmico, pretende-se documentar o projeto como um todo, com ênfase na teoria, nas tecnologias, na metodologia, nos insumos desenvolvidos e nas análises. Esses registros poderão ser consultados por outros interessados e subsidiar o refinamento futuro do projeto piloto. Essa parte documental já representa uma contribuição da proposta. A análise permanecerá delimitada aos repositórios autorizados pela Empresa A e às condições efetivamente observadas.
+
+\section{Objetivos}
+\label{intro-objetivos}
+
+Para orientar o desenvolvimento do projeto piloto e a análise de sua aplicação em uma empresa real, foram definidos um objetivo geral e oito objetivos específicos, apresentados a seguir.
+
+\subsection{Objetivo Geral}
+\label{intro-objetivo-geral}
+
+% V4: forma nominal, como a orientadora pediu ("não usar verbos para especificar objetivos").
+Desenvolvimento e aplicação de um sistema multiagente especializado em segurança de software (práticas DevSecOps), estruturado como uma arquitetura P2P semicentralizada em um Agente Auditor, para a produção de pareceres fundamentados em evidências na auditoria de repositórios de um portfólio de automações em uma empresa real.
+
+\subsection{Objetivos Específicos}
+\label{intro-objetivos-especificos}
+
+Os objetivos específicos, em conjunto, buscam o cumprimento do objetivo geral. Eles abrangem as fundamentações teórica e tecnológica, a modelagem, a implementação e a análise da proposta.
+
+% V4: oito objetivos, na numeração e na redação que a orientadora anotou. Confira o OE2, pois a anotação dela só mostra o início da frase.
+\begin{itemize}
+    \item \textbf{Objetivo Específico 1:} Levantamento teórico e tecnológico sobre Sistemas Multiagentes, arquitetura P2P semi-centralizada e segurança de software, com foco em governança de software, auditoria e práticas DevSecOps;
+    \item \textbf{Objetivo Específico 2:} Levantamento de trabalhos relacionados a sistemas multiagentes, comunicação entre agentes e apoio à decisão em auditoria, com ênfase em segurança de software;
+    \item \textbf{Objetivo Específico 3:} Modelagem das responsabilidades dos agentes, do fluxo de análise e dos mecanismos de comunicação na arquitetura P2P semicentralizada;
+    \item \textbf{Objetivo Específico 4:} Implementação do projeto piloto, considerando os insumos dos levantamentos anteriores e a modelagem arquitetural dos agentes;
+    \item \textbf{Objetivo Específico 5:} Rastreabilidade das interações entre agentes especialistas, incluindo o registro das evidências compartilhadas e das condições para manter ou ajustar uma conclusão em função das informações recebidas;
+    \item \textbf{Objetivo Específico 6:} Incorporação do Agente Auditor à solução para consolidar os pareceres por regras explícitas, com base em insumos de governança de software em segurança, identificando a necessidade complementar de análise humana;
+    \item \textbf{Objetivo Específico 7:} Análise dos resultados por meio de um estudo observacional e descritivo do projeto piloto, considerando a rastreabilidade das evidências e das interações entre agentes, além da apreciação dos pareceres por especialistas, e
+    \item \textbf{Objetivo Específico 8:} Documentação dos achados de pesquisa, de desenvolvimento e de análise, visando divulgar a solução e aperfeiçoá-la em trabalhos futuros.
+\end{itemize}
+
+\section{Metodologia}
+\label{intro-metodologia}
+
+% V4: classificação da pesquisa pedida pela orientadora. Gil cobre objetivos e procedimentos. Natureza e abordagem vêm de Gerhardt e Silveira.
+% O trecho de Gil enviado pela orientadora não traz natureza nem abordagem, por isso há duas fontes.
+A pesquisa pode ser classificada quanto à natureza, à abordagem, aos objetivos e aos procedimentos \cite{gerhardt2009,gil2002}. Quanto à natureza, trata-se de uma pesquisa aplicada, pois a solução é proposta para o portfólio de uma empresa real. Quanto aos objetivos, a pesquisa é exploratória e descritiva. Ela busca familiaridade com um problema ainda pouco explorado pelo autor e documenta cada aspecto relevante do projeto piloto. Quanto à abordagem, a pesquisa é predominantemente qualitativa, apoiada na percepção de especialistas em segurança sobre os pareceres. Medidas quantitativas descritivas serão usadas quando ajudarem a evidenciar um aspecto, como o número de achados e de interações entre os agentes.
+% PENDENTE: a orientadora menciona "taxa de acerto dos agentes". O sistema não emite veredito. Combinar com ela o que será medido antes de escrever essa expressão.
+
+Os procedimentos são três. A pesquisa bibliográfica embasa os tópicos em estudo. A prova de conceito indica um caminho de solução, sem a pretensão de entregar uma solução plena, implantada na empresa. O estudo observacional e descritivo mantém o projeto piloto documentado para consultas e trabalhos futuros. Esse estudo será realizado em versões identificadas de repositórios autorizados pela Empresa A. O planejamento da coleta considera, por adaptação ao domínio de software, as contribuições de \citeonline{zangirolami2018} e de \citeonline{morshed2009}, além das diretrizes de \citeonline{runeson2009} para estudos empíricos em engenharia de software.
+
+Como procedimento complementar, será realizada uma apreciação humana estruturada, que capta a percepção de especialistas em segurança sobre a clareza, a coerência e a fundamentação dos pareceres gerados pelo sistema multiagente. O desenvolvimento será orientado por uma combinação de Scrum Solo \cite{pagotto2016} e Kanban \cite{boeg2010}. A classificação detalhada da pesquisa, a pesquisa bibliográfica, os critérios de seleção dos repositórios e dos avaliadores, os instrumentos de coleta e os procedimentos de análise são apresentados no Capítulo~\ref{cap-metodologia}.
+
+\section{Organização da Monografia}
+\label{intro-organizacao}
+
+A monografia está organizada em seis capítulos nesta primeira etapa do trabalho. Após esta introdução, os demais capítulos são descritos a seguir.
+
+\begin{itemize}
+    \item \textbf{Capítulo 2 -- Referencial Teórico:} apresenta os conceitos e os trabalhos relacionados que fundamentam a pesquisa, com foco em segurança de software, mais especificamente em auditoria de software e práticas DevSecOps. Abrange ainda a diversidade das automações, os sistemas multiagentes, a comunicação entre agentes e a governança com apoio à decisão;
+    \item \textbf{Capítulo 3 -- Suporte Tecnológico:} descreve as ferramentas de apoio geral, de modelagem e de desenvolvimento, incluindo a infraestrutura de comunicação entre agentes, as ferramentas de análise de qualidade, segurança e dependências e os recursos de interpretação documental;
+    \item \textbf{Capítulo 4 -- Metodologia:} detalha a classificação da pesquisa, a pesquisa bibliográfica, os métodos de modelagem, de provas de conceito, de desenvolvimento e de análise de resultados, além das atividades e dos cronogramas para ambas as etapas do trabalho;
+    \item \textbf{Capítulo 5 -- Proposta:} apresenta a Empresa A e o perfil de seu portfólio de repositórios, os requisitos da solução, a arquitetura multiagente e as responsabilidades dos participantes. Detalha a comunicação P2P entre agentes especialistas, a consolidação de pareceres pelo Auditor e a prova de conceito, e
+    \item \textbf{Capítulo 6 -- Status Atual do Trabalho:} retoma a questão de pesquisa e os objetivos, sintetiza o estágio alcançado na primeira etapa do trabalho e apresenta as limitações identificadas e os próximos passos da solução, além de esclarecimentos sobre o uso da IA Generativa no trabalho.
+\end{itemize}
+
+Ao final, são apresentadas as referências bibliográficas e os demais insumos gerados ao longo do trabalho, em apêndices. Entre eles estão o instrumento proposto para o registro das auditorias e o Termo de Consentimento Livre e Esclarecido (TCLE), necessário à apreciação dos pareceres por especialistas.

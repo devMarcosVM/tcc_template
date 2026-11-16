@@ -1,49 +1,190 @@
+% Capítulo 3, versão 3.
+% Cada tecnologia segue a mesma ordem: o que é (com fonte), o que oferece e como é usada neste trabalho.
+
 \chapter{Suporte Tecnológico}
 \label{cap-suporte-tecnologico}
+
+Este capítulo apresenta as ferramentas utilizadas ou previstas para a redação da monografia, a modelagem da arquitetura e o desenvolvimento da prova de conceito. Cada ferramenta é descrita na mesma ordem. Primeiro se apresenta o que ela é, depois os recursos que interessam ao trabalho e, por fim, o uso previsto. A Seção~\ref{st-tcc} trata das ferramentas de apoio geral, a Seção~\ref{st-modelagem}, das ferramentas de modelagem, e a Seção~\ref{st-desenvolvimento}, das tecnologias de implementação, comunicação, análise de software e interpretação documental. A Seção~\ref{st-resumo} resume o capítulo em um quadro com a finalidade e a situação de adoção de cada componente.
 
 \section{Ferramentas de Apoio Geral}
 \label{st-tcc}
 
+\subsection{LaTeX}
+\label{st-3-1-1}
+
+LaTeX é um sistema de preparação de documentos que oferece recursos para composição de textos científicos, referências cruzadas, figuras, tabelas e bibliografias \cite{latexProject}. Neste trabalho, é utilizado para organizar e formatar a monografia a partir do modelo adotado pelo curso. Os arquivos dos capítulos, as referências bibliográficas e as figuras são reunidos nesse projeto de redação.
+
+\subsection{Zotero}
+\label{st-3-1-2}
+
+Zotero é um gerenciador de referências que permite reunir registros bibliográficos, organizar fontes em coleções e associar arquivos e notas aos itens cadastrados \cite{zoteroGuide}. Neste trabalho, apoia a organização do acervo consultado e a recuperação dos documentos usados na fundamentação.
+
+Os registros bibliográficos são conferidos quanto à autoria, ao título, ao ano e à identificação da publicação. A planilha de levantamento permanece como registro dos critérios e das decisões de seleção e distingue os estudos selecionados da literatura complementar.
 
 \section{Ferramentas de Modelagem}
 \label{st-modelagem}
 
+\subsection{UML, draw.io e PlantUML}
+\label{st-3-2-1}
+
+A arquitetura é modelada em UML, linguagem gráfica especificada pelo \textit{Object Management Group} para visualizar, especificar, construir e documentar sistemas \cite{omgUml}. São usados dois diagramas. O diagrama de componentes mostra os agentes, as ferramentas e os artefatos, com suas relações. O diagrama de sequência mostra a ordem das mensagens em uma auditoria.
+
+O diagrama de componentes é elaborado no draw.io, também conhecido como diagrams.net. A ferramenta conserva os diagramas em formato editável e exporta figuras em formatos como SVG e PDF \cite{drawioExport}. O diagrama de sequência é mantido em PlantUML, ferramenta em que o diagrama é definido inteiramente em texto e desenhado automaticamente \cite{plantumlSequence}.
+
+Os diagramas distinguem a arquitetura alvo do recorte implementado no protótipo inicial. Os arquivos editáveis são conservados para acompanhar a evolução do projeto, e as figuras são apresentadas e discutidas no capítulo da Proposta.
+
 \section{Ferramentas de Desenvolvimento}
 \label{st-desenvolvimento}
+
+\subsection{Python}
+\label{st-3-3-1}
+
+Python é a linguagem de implementação dos agentes, dos adaptadores das ferramentas e do processamento dos registros da auditoria. Sua biblioteca \texttt{asyncio} oferece recursos de programação assíncrona, comunicação de rede e controle de subprocessos \cite{pythonAsyncio}, necessários ao envio de mensagens e ao acompanhamento das ferramentas externas.
+
+A escolha da linguagem decorre do uso de SPADE, apresentado a seguir. O protótipo inicial registra o uso de Python 3.13.7. As versões efetivamente utilizadas na aplicação da pesquisa serão conservadas junto aos registros de execução.
+
+A linguagem de implementação é independente das linguagens dos repositórios analisados. A cobertura de Python, TypeScript e PHP depende das ferramentas, dos artefatos disponíveis e da configuração de cada análise. A demonstração inicial utiliza um repositório sintético em Python, anterior à aplicação em repositórios autorizados da Empresa A.
+
+\subsection{SPADE}
+\label{st-3-3-2}
+
+SPADE, sigla de \textit{Smart Python Agent Development Environment}, é uma plataforma de sistemas multiagentes escrita em Python e baseada em XMPP \cite{palanca2020,spadeDocs}. Sua documentação descreve um modelo de agentes organizado por comportamentos e apoiado em \texttt{asyncio}, e informa que a plataforma pode ser usada com qualquer servidor XMPP \cite{spadeDocs}.
+
+Na prova de conceito, SPADE é empregado na construção dos agentes e no envio e recebimento das mensagens. O protótipo inicial utiliza a versão 4.1.4 e mantém quatro participantes em processos separados, que são o Orquestrador, o agente de Qualidade, o de Segurança e o Auditor. O agente de Requisitos e Documentação integra a arquitetura alvo e será acrescentado na etapa de interpretação documental.
+
+Essa separação conserva a identidade dos participantes e permite acompanhar a origem das mensagens. As consultas P2P são encaminhadas entre os especialistas. O Orquestrador organiza a execução, e o Auditor recebe as conclusões para consolidação. SPADE fornece a infraestrutura de agentes, e os comportamentos e os critérios de análise são especificados pelo projeto.
+
+\subsection{XMPP e Prosody}
+\label{st-3-3-3}
+
+XMPP é um protocolo que permite a troca, quase em tempo real, de dados estruturados entre duas ou mais entidades de rede \cite{rfc6120}. É o protocolo de transporte utilizado por SPADE. Prosody é o servidor XMPP selecionado para o ambiente inicial, com recursos documentados de configuração, módulos e certificados \cite{prosodyDocs}. Como o protótipo usa uma compilação de desenvolvimento do servidor, o pacote ou a imagem utilizados serão identificados nos registros do ambiente, para permitir a reprodução da configuração. Cada agente utiliza uma identidade própria na comunicação.
+
+A comunicação P2P adotada é a relação lógica entre os agentes que formulam e respondem às consultas. O servidor apenas transporta as mensagens. Uma solicitação do agente de Segurança continua sendo respondida diretamente pelo agente de Qualidade ou pelo de Requisitos e Documentação.
+
+O protótipo registra os identificadores das auditorias e das solicitações, para relacionar perguntas, respostas e conclusões. Tempos de espera e estados de falha permitem identificar interações não concluídas. Esses registros serão utilizados na análise do funcionamento da arquitetura, conforme os procedimentos definidos na Metodologia.
+
+\subsection{Docker Compose}
+\label{st-3-3-4}
+
+Docker Compose permite definir e executar aplicações compostas por múltiplos contêineres, reunindo configurações de serviços, redes e volumes em um arquivo YAML \cite{dockerCompose}. No protótipo, esse recurso organiza os serviços de infraestrutura necessários à comunicação e à análise de código.
+
+As configurações do ambiente são conservadas para identificar os serviços utilizados e suas versões. As credenciais de acesso são fornecidas por configuração externa ao código-fonte, incluindo variáveis de ambiente para os \textit{tokens} exigidos pelas ferramentas. Assim, os valores de acesso não integram os relatórios da pesquisa.
+
+\subsection{SonarQube e SonarScanner}
+\label{st-3-3-5}
+
+SonarQube produz medidas de qualidade e aponta violações das regras de análise. O SonarScanner executa a análise configurada e envia um relatório ao servidor, que o processa em uma tarefa de segundo plano. Segundo a documentação, uma análise só está completa quando essa tarefa termina \cite{sonarAnalysis99}.
+
+No protótipo inicial, SonarQube fornece as evidências consultadas pelo agente de Qualidade. O adaptador acompanha o processamento da tarefa e relaciona os resultados à análise e à revisão do repositório. Assim, o fim da execução do \textit{scanner} não é tomado como sinal de que os resultados já estão disponíveis.
+
+As medidas conservam sua granularidade. Um resultado agregado por arquivo é interpretado nesse nível, sem atribuição automática a uma função específica. O estado do \textit{Quality Gate} é conservado como informação da ferramenta. O parecer o apresenta sem convertê-lo em veredito, e a classificação cabe ao responsável humano.
+
+O ambiente inicial registra SonarQube Community 9.9.8.100196 e SonarScanner CLI 8.1.0.6389. A cobertura efetiva dos repositórios selecionados será verificada antes da aplicação, pois depende da linguagem e da edição da ferramenta.
+
+\subsection{Semgrep}
+\label{st-3-3-6}
+
+Semgrep é uma ferramenta de análise estática que identifica padrões de código por meio de regras e produz um relatório dos achados. Sua edição comunitária analisa Python, TypeScript, JavaScript e PHP. A documentação classifica essas linguagens, nessa edição, como suportadas pela comunidade, sem prioridade nas atualizações de regras e do motor, e limita a análise ao interior de cada função \cite{semgrepDocs}. Essas duas características serão registradas como limitações da cobertura.
+
+O Semgrep será a fonte de evidências de segurança estática para o agente de Segurança. Ele substitui o Bandit, ferramenta restrita a Python utilizada no protótipo inicial. O uso de uma única ferramenta para as três linguagens evita adaptadores distintos e uniformiza o formato das evidências. Os resultados preservam a identificação da regra, a localização e as classificações emitidas pela ferramenta. O especialista pode consultar medidas do SonarQube referentes ao mesmo arquivo para contextualizar um achado, conservada a distinção entre complexidade e evidência de vulnerabilidade.
+
+O motor da edição comunitária é distribuído sob a licença LGPL 2.1, e as regras mantidas pelo fabricante são cobertas por uma licença que restringe seu uso a fins internos \cite{semgrepLicensing}. Esse uso será considerado nas condições de aplicação da pesquisa. As regras serão mantidas em cópia local versionada, e o conjunto de regras e sua versão serão registrados em cada análise, pois a cobertura depende das regras disponíveis para cada linguagem. O protótipo não executa a aplicação auditada nem modifica seus arquivos.
+
+\subsection{Ferramentas para Dependências e Ampliação de Cobertura}
+\label{st-3-3-7}
+
+\begin{sloppypar}
+A análise de dependências identifica os componentes e as versões que o software utiliza e os relaciona a vulnerabilidades conhecidas \cite{blackIr8397}. Essa integração ainda não compõe o protótipo inicial. As ferramentas do Quadro~\ref{quadro-ferramentas-dependencias} são candidatas e serão selecionadas conforme os manifestos e os gerenciadores encontrados nos repositórios.
+\end{sloppypar}
+
+\begin{table}[p]
+\centering
+\caption{Ferramentas candidatas à análise de dependências e ampliação de cobertura}
+\label{quadro-ferramentas-dependencias}
+\begingroup
+\footnotesize
+\SingleSpacing
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\hline
+\textbf{Ferramenta} & \textbf{Aplicação prevista} & \textbf{Condição de utilização} \\ \hline
+pip-audit & Consulta de vulnerabilidades conhecidas em dependências Python & Identificação das dependências e versões em formato compatível \\ \hline
+npm audit & Auditoria de dependências de projetos que utilizam npm, inclusive aplicações TypeScript & Presença de estrutura de dependências compatível com npm \\ \hline
+Composer audit & Consulta de avisos de segurança associados a pacotes gerenciados por Composer & Projeto PHP que utilize Composer e permita identificar as versões analisadas \\ \hline
+Trivy & Verificações adicionais de vulnerabilidades, segredos e configurações, conforme alvo e modo & Seleção explícita do escopo e dos formatos suportados \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
+
+\begin{sloppypar}
+As funções dessas ferramentas são descritas em suas documentações oficiais \cite{pipAuditDocs,npmAuditDocs,composerAuditDocs,trivyDocs}. Relatórios sobrepostos de ferramentas diferentes não serão tratados como evidências independentes de um mesmo problema. A data da consulta e a identificação das bases de vulnerabilidades utilizadas serão conservadas.
+\end{sloppypar}
+
+Os adaptadores são configurados apenas para coleta de evidências. Comandos de correção automática, de atualização de pacotes ou de execução da aplicação não integram o procedimento. A ausência de um manifesto compatível será registrada como limitação de cobertura, e não como ausência de vulnerabilidades.
+
+\subsection{Modelo de Linguagem e Execução Local}
+\label{st-3-3-8}
+
+O agente de Requisitos e Documentação utiliza um modelo de linguagem para interpretar documentos textuais a partir das consultas dos especialistas. Como em \citeonline{yesil2026}, a extração de informações dos documentos fica separada da decisão orientada por regras. O modelo fornece contexto. A sinalização de pontos de atenção permanece com as regras do Auditor, e a decisão final, com o responsável humano.
+
+A execução local do modelo está em avaliação. Entre os recursos considerados está o Ollama, que oferece uma interface de programação para integrar aplicações a modelos executados localmente \cite{ollamaApi}. Nessa configuração, o agente encaminha as consultas ao serviço de inferência e recebe as respostas para processamento e registro. A execução local mantém o processamento dos documentos no ambiente definido para a pesquisa, observadas as condições de acesso e de tratamento dos dados da organização.
+
+A seleção do modelo considerará a capacidade de interpretar documentos em português, a fundamentação das respostas nos trechos fornecidos, o reconhecimento de informação insuficiente, o tempo de resposta e o consumo de memória. O tamanho do contexto também será considerado, pois um contexto maior aumenta a memória necessária para executar o modelo \cite{ollamaContext}. A adoção do Ollama e a escolha do modelo dependem da verificação de sua adequação à tarefa.
+
+Serão registrados a identificação e a versão do modelo, a quantização, quando utilizada, o tamanho de contexto e os parâmetros de geração, juntamente com as entradas e as respostas produzidas. A integração deverá receber a consulta do especialista, identificar os documentos pertinentes e conservar os trechos utilizados na resposta. Deverá também registrar informação insuficiente, resposta sem apoio documental e conflito entre fontes, estados que distinguem um contexto recuperado de uma conclusão que não pôde ser sustentada.
+
+A recuperação aumentada por geração, empregada por \citeonline{yesil2026}, é uma possibilidade de implementação. Sua adoção, o mecanismo de busca e a eventual indexação serão especificados após a definição do conjunto de documentos, e não há banco vetorial escolhido nesta etapa. Os critérios de aceitação das respostas e a ligação entre arquivos e componentes são detalhados no capítulo da Proposta.
+
+\subsection{Versionamento, Registros e Apresentação}
+\label{st-3-3-9}
+
+Git é empregado na identificação das revisões dos repositórios examinados e no acompanhamento das alterações do projeto. O sistema conserva o histórico dos repositórios e permite relacionar o código a uma revisão identificada \cite{gitAbout}. Na auditoria, o identificador do \textit{commit} delimita a versão analisada.
+
+O protótipo utiliza arquivos JSON para evidências e pareceres e registros JSONL para eventos da execução. As regras do Auditor são armazenadas em YAML, o que permite conservar a política utilizada em cada auditoria. As dependências do código incluem Pydantic, HTTPX e PyYAML, usadas, respectivamente, na validação estrutural dos dados, nas consultas HTTP às ferramentas e no carregamento das políticas.
+
+A identificação do \textit{commit}, das ferramentas e das configurações relaciona o parecer à versão examinada. Os resultados originais das ferramentas são conservados junto às evidências normalizadas e às mensagens pertinentes. Assim, o relatório permite localizar a fonte de uma afirmação e acompanhar sua participação na conclusão.
+
+Para a apreciação humana estruturada, será preparado um material de leitura com o parecer, as evidências citadas, os trechos documentais e as regras acionadas. O responsável humano avaliará a clareza, a coerência e a fundamentação desse material, sem realizar uma nova auditoria. O instrumento de registro das apreciações é definido na Metodologia.
+
+A apresentação consolidada das auditorias poderá incluir um painel, acompanhado dos relatórios detalhados. A tecnologia dessa interface ainda não foi selecionada. Ela deverá preservar o acesso às evidências e às limitações de cada execução, para que a visão agregada não oculte diferenças de cobertura entre repositórios.
 
 \section{Resumo do Capítulo}
 \label{st-resumo}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed scelerisque porta accumsan. Cras sed vestibulum lorem. Curabitur ac tincidunt urna. Praesent non faucibus risus. Praesent efficitur lacus et euismod venenatis. Nulla nec ante felis. Praesent ex libero, mollis sit amet commodo et, finibus id orci. Pellentesque ut mi accumsan sapien hendrerit maximus. Praesent iaculis sit amet erat a imperdiet. Maecenas ac leo pulvinar lacus posuere pharetra. Sed suscipit, arcu ut commodo elementum, ipsum tellus fermentum dolor, nec aliquam elit tellus et felis. Phasellus lacinia tempus tempus. In dictum mi purus, nec lobortis turpis consequat in. Etiam suscipit leo quis augue vulputate auctor.
+O suporte tecnológico reúne recursos de redação, de modelagem e de implementação. Python e SPADE sustentam os agentes, e Prosody transporta as mensagens por XMPP. SonarQube fornece as evidências de qualidade, e o Semgrep, as de segurança estática. A interpretação documental e a análise de dependências serão integradas nas etapas seguintes, conforme a seleção dos componentes e o escopo dos repositórios. O Quadro~\ref{quadro-tecnologias} resume a finalidade e a situação de cada tecnologia.
 
-% \begin{table}[h]
-% 	\centering
-% 	\caption[Principais ferramentas do trabalho]{Principais ferramentas do trabalho e as suas respectivas versões.}
-% 	\label{tabela-versoes-ferramentas}
-% 	\begin{tabular}{llll}
-%         \hline
-%         \multicolumn{1}{c}{\textbf{Ferramenta}} & \multicolumn{1}{c}{\textbf{Categoria}} & \multicolumn{1}{c}{\textbf{Link}}                                                                                                                                 & \multicolumn{1}{c}{\textbf{Versão Utilizada}} \\ \hline
-%         \LaTeX                   & Apoio Geral                                    & \href{https://www.latex-project.org/}{Acesso}                                                                                                             & 3.14159265                                    \\ \hline
-%         Zotero                                  & Apoio Geral                                    & \href{https://www.zotero.org/}{Acesso}                                                                                                                    & 6.0.37                                        \\ \hline
-%         Notion                                  & Apoio Geral                                    & \href{https://www.notion.so/product}{Acesso}                                                                                                              & 3.5.0 (3.5.0)                                 \\ \hline
-%         Telegram                                  & Apoio Geral                                    & \href{https://telegram.org/}{Acesso}                                                                                                              & 10.13.264000 AppStore                                 \\ \hline
-%         Microsoft Teams                                  & Apoio Geral                                    & \href{https://www.microsoft.com/pt-br/microsoft-teams/teams-for-home}{Acesso}                                                                                                              & 24102.2214.2869.7475                                 \\ \hline
-%         Slack                                   & Apoio Geral                                    & \href{https://slack.com/about}{Acesso}                                                                                                                    & 4.38.115                                      \\ \hline
-%         Adobe Acrobat Reader                    & Apoio Geral                                    & \href{https://www.adobe.com/br/acrobat.html}{Acesso}                                                                                                      & 2024.002.20687                                \\ \hline
-%         Freeform                                & Modelagem                              & \href{https://www.apple.com/br/newsroom/2022/12/apple-launches-freeform-a-powerful-new-app-designed-for-creative-collaboration/}{Acesso}                  & 2.4 (367.51)                                  \\ \hline
-%         StarUML                                 & Modelagem                              & \href{https://staruml.sourceforge.net/v1/}{Acesso}                                                                                                        & 5.0.2.1570                                    \\ \hline
-%         RE-Tools                                & Modelagem                              & \href{https://personal.utdallas.edu/$\sim$chung/Sam\_Supakkul/RE-Tools/NFR-Framework.html}{Acesso}                                                        & 3.2                                           \\ \hline
-%         Git                                     & Desenvolvimento                        & \href{https://git-scm.com/}{Acesso}                                                                                                                       & 2.44.0                                        \\ \hline
-%         VsCode                                  & Desenvolvimento                        & \href{https://code.visualstudio.com/docs}{Acesso}                                                                                                         & 1.88.1                                        \\ \hline
-%         GitHub                                  & Desenvolvimento                        & \href{https://github.com/}{Acesso}                                                                                                                        & 3.3.14                                        \\ \hline
-%         Docker                                  & Desenvolvimento                        & \href{https://docs.docker.com/get-docker/}{Acesso}                                                                                                        & 26.0.0                                        \\ \hline
-%         Python                                  & Desenvolvimento                        & \href{https://docs.python.org/3/faq/general.html}{Acesso}                                                                                                 & 3.12.3                                        \\ \hline
-%         Node                                  & Desenvolvimento                        & \href{https://nodejs.org/en/}{Acesso}                                                                                                 & v.22.11.0                                        \\ \hline
-%         SQL                                  & Desenvolvimento                        & -                                                                                                 & -                                        \\ \hline
-%         DBeaver                              & Desenvolvimento                        & \href{https://dbeaver.io/}{Acesso}                                                                                                          & 24.3.4.202502021521                                         \\ \hline
-%         PostgreSQL                              & Desenvolvimento                        & \href{https://www.postgresql.org/about/}{Acesso}                                                                                                          & 14.11                                         \\ \hline
-%         DuckDB                                  & Desenvolvimento                        & \href{https://duckdb.org/}{Acesso}                                                                                                                        & 0.10.1                                        \\ \hline
-%         Wireshark                                  & Desenvolvimento                        & \href{https://www.wireshark.org/}{Acesso}                                                                                                                        & 4.4.1                                        \\ \hline
-%         \end{tabular}
-% 	\legend{Fonte: Autor.}
-% \end{table}
+\begin{table}[p]
+\centering
+\caption{Tecnologias e recursos utilizados ou previstos no trabalho}
+\label{quadro-tecnologias}
+\begingroup
+\footnotesize
+\SingleSpacing
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\hline
+\textbf{Tecnologia ou recurso} & \textbf{Categoria} & \textbf{Finalidade no trabalho} & \textbf{Versão ou situação} \\ \hline
+LaTeX & Apoio geral & Redação e formatação da monografia & Projeto de redação existente; distribuição a registrar \\ \hline
+Zotero & Apoio geral & Organização do acervo e das referências & Em uso; versão a registrar \\ \hline
+UML, draw.io e PlantUML & Modelagem & Diagramas de componentes e de sequência & Em uso; versões a registrar \\ \hline
+Python & Desenvolvimento & Implementação dos agentes e adaptadores & 3.13.7 no protótipo inicial \\ \hline
+SPADE & Desenvolvimento & Comportamentos e mensagens dos agentes & 4.1.4 no protótipo inicial \\ \hline
+Prosody & Desenvolvimento & Servidor XMPP & 13.0 nightly build 100 no protótipo inicial \\ \hline
+Docker Compose & Desenvolvimento & Configuração dos serviços & Utilizado; versão a registrar \\ \hline
+SonarQube Community & Desenvolvimento & Medidas e achados de código & 9.9.8.100196 no protótipo inicial \\ \hline
+SonarScanner CLI & Desenvolvimento & Envio das análises ao SonarQube & 8.1.0.6389 no protótipo inicial \\ \hline
+Semgrep (edição comunitária) & Desenvolvimento & Análise estática de segurança em Python, TypeScript e PHP & Integração pendente; versão a registrar. O protótipo inicial utilizou Bandit 1.9.4 \\ \hline
+pip-audit, npm audit, Composer audit e Trivy & Desenvolvimento & Análise de dependências e ampliação da cobertura & Candidatos; seleção e integração pendentes \\ \hline
+Ollama e modelo de linguagem & Desenvolvimento & Serviço de interpretação documental & Em avaliação; modelo a selecionar \\ \hline
+Git & Desenvolvimento & Histórico e identificação das revisões & Utilizado; versão a registrar \\ \hline
+JSON, JSONL e YAML & Formatos de apoio à implementação & Evidências, eventos e políticas & Utilizados no protótipo inicial \\ \hline
+Painel e material de leitura dos pareceres & Apresentação & Consulta aos resultados e às evidências & Tecnologia da interface e instrumento a definir \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor, a partir do projeto e dos registros do protótipo inicial.}
+\end{table}
+
+As versões indicadas documentam o ambiente já empregado e serão atualizadas conforme a configuração efetiva da aplicação da pesquisa. Os procedimentos de avaliação e apreciação humana são definidos na Metodologia. A arquitetura, os diagramas e os critérios de consolidação dos pareceres são detalhados no capítulo da Proposta.

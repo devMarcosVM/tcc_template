@@ -6,8 +6,10 @@ build:
 	docker compose build latex
 .PHONY: pdf
 pdf:
+	@if [ -f latex/figuras/figuras.zip ]; then unzip -n -q latex/figuras/figuras.zip -d latex/figuras; fi
 	docker compose up
 	mv ./latex/TCC_PDF.pdf ./
+	mv -f ./latex/TCC_PDF.pdf ./
 	make clean
 	@echo "$(GREEN)PDF gerado com sucesso.$(END)"
 .PHONY: clean
