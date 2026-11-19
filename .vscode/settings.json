@@ -1,13 +1,11 @@
 {
-	"emeraldwalk.runonsave": {
+    "emeraldwalk.runonsave": {
         "commands": [
             {
-				"match": ".*",
-				"isAsync": true,
-				"cmd": "PATH=/usr/local/bin:$PATH make pdf",
-				"autoShowOutputPanel": "error",
-				"shell": "/bin/zsh",
-			}
+                "match": "\\.(tex|bib|sty|cls)$",
+                "isAsync": false,
+                "cmd": "cd \"${workspaceFolder}\" && make pdf"
+            }
         ]
-    },
+    }
 }

@@ -1,4 +1,4 @@
-TARGET = TCC_PDF.pdf
+TARGET = build/TCC_PDF.pdf
 VERSION = 0.1.0
 
 FIXOS_DIR = fixos
@@ -29,13 +29,12 @@ SOURCES = $(FIXOS_FILES) $(EDITAVEIS_FILES)
 
 .PHONY: all clean dist-clean
 
-all: $(TARGET)
-
-$(TARGET): $(MAIN_FILE) $(SOURCES) bibliografia.bib
-	latexmk -pdf -shell-escape -jobname=$(basename $(TARGET)) $(MAIN_FILE)
+all:
+	mkdir -p build
+	latexmk -pdf -shell-escape -interaction=nonstopmode -halt-on-error -outdir=build -jobname=TCC_PDF $(MAIN_FILE)
 
 clean:
-	latexmk -c
+	latexmk -c -outdir=build -jobname=TCC_PDF $(MAIN_FILE)
 
 dist: clean
 	tar vczf tcc-fga-latex-$(VERSION).tar.gz *

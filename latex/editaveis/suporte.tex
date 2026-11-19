@@ -1,190 +1,134 @@
-% Capítulo 3, versão 3.
-% Cada tecnologia segue a mesma ordem: o que é (com fonte), o que oferece e como é usada neste trabalho.
+% Capítulo 3, versão 5.
+% Combina os três TCCs de referência.
+%   André e Gabriel: profundidade proporcional (ferramentas centrais detalhadas, periféricas agrupadas).
+%   Adne e Gabriel: justificativa da escolha de cada ferramenta central.
+%   Victor: concisão e quadro final com versões.
+% Linhas "% CONFIRMAR" marcam motivos de escolha que precisam ser confirmados pelo autor.
+% Requer hyperref (já carregado pelo abntex2) para os links do quadro.
 
 \chapter{Suporte Tecnológico}
 \label{cap-suporte-tecnologico}
 
-Este capítulo apresenta as ferramentas utilizadas ou previstas para a redação da monografia, a modelagem da arquitetura e o desenvolvimento da prova de conceito. Cada ferramenta é descrita na mesma ordem. Primeiro se apresenta o que ela é, depois os recursos que interessam ao trabalho e, por fim, o uso previsto. A Seção~\ref{st-tcc} trata das ferramentas de apoio geral, a Seção~\ref{st-modelagem}, das ferramentas de modelagem, e a Seção~\ref{st-desenvolvimento}, das tecnologias de implementação, comunicação, análise de software e interpretação documental. A Seção~\ref{st-resumo} resume o capítulo em um quadro com a finalidade e a situação de adoção de cada componente.
+Este capítulo apresenta as tecnologias utilizadas ou previstas neste trabalho. As ferramentas centrais da prova de conceito, isto é, a plataforma de agentes, o transporte de mensagens e as ferramentas de análise, são descritas incluindo os motivos de sua escolha. As ferramentas de infraestrutura, de modelagem e de apoio à pesquisa são apresentadas de forma agrupada. A Seção~\ref{st-desenvolvimento} trata das tecnologias de desenvolvimento, a Seção~\ref{st-modelagem}, das ferramentas de modelagem, e a Seção~\ref{st-tcc}, das ferramentas de apoio à pesquisa e à escrita. A Seção~\ref{st-resumo} reúne as ferramentas, suas finalidades e versões em um quadro.
 
-\section{Ferramentas de Apoio Geral}
-\label{st-tcc}
+\section{Tecnologias de Desenvolvimento}
+\label{st-desenvolvimento}
 
-\subsection{LaTeX}
-\label{st-3-1-1}
+Esta seção apresenta as tecnologias empregadas ou previstas na prova de conceito. Elas são executadas localmente, o que mantém o processamento dos repositórios e dos documentos no ambiente definido para a pesquisa, observadas as condições de acesso aos dados da organização.
 
-LaTeX é um sistema de preparação de documentos que oferece recursos para composição de textos científicos, referências cruzadas, figuras, tabelas e bibliografias \cite{latexProject}. Neste trabalho, é utilizado para organizar e formatar a monografia a partir do modelo adotado pelo curso. Os arquivos dos capítulos, as referências bibliográficas e as figuras são reunidos nesse projeto de redação.
+\subsection{Python e bibliotecas de apoio}
+\label{st-python}
 
-\subsection{Zotero}
-\label{st-3-1-2}
+Python é a linguagem de implementação dos agentes e dos adaptadores que acionam as ferramentas de análise. Sua biblioteca \texttt{asyncio} oferece recursos de programação assíncrona, comunicação de rede e controle de subprocessos \cite{pythonAsyncio}, usados no envio de mensagens e no acompanhamento das ferramentas externas. A escolha da linguagem decorre do uso do SPADE, apresentado a seguir, e independe das linguagens dos repositórios analisados.
 
-Zotero é um gerenciador de referências que permite reunir registros bibliográficos, organizar fontes em coleções e associar arquivos e notas aos itens cadastrados \cite{zoteroGuide}. Neste trabalho, apoia a organização do acervo consultado e a recuperação dos documentos usados na fundamentação.
+O protótipo também utiliza três bibliotecas. Pydantic é uma biblioteca de validação de dados \cite{pydanticDocs}, usada para verificar a estrutura das evidências e das conclusões trocadas entre os agentes. HTTPX é uma biblioteca cliente HTTP \cite{httpxDocs}, usada nas consultas às interfaces das ferramentas de análise. PyYAML lê e escreve arquivos YAML \cite{pyyamlDocs} e é usada no carregamento das regras do agente Auditor.
 
-Os registros bibliográficos são conferidos quanto à autoria, ao título, ao ano e à identificação da publicação. A planilha de levantamento permanece como registro dos critérios e das decisões de seleção e distingue os estudos selecionados da literatura complementar.
+\subsection{SPADE}
+\label{st-spade}
+
+SPADE, sigla de \textit{Smart Python Agent Development Environment}, é uma plataforma para o desenvolvimento de sistemas multiagentes escrita em Python e baseada no protocolo XMPP \cite{palanca2020,spadeDocs}. Na plataforma, cada agente tem uma identidade própria no servidor de mensagens, e seu funcionamento é organizado em comportamentos executados de forma assíncrona \cite{spadeDocs}.
+
+A escolha do SPADE considerou as seguintes características.
+% CONFIRMAR: os três motivos abaixo foram deduzidos do projeto. Confirme se foram estes os seus motivos e acrescente outros, se houver.
+
+\begin{itemize}
+\item Linguagem única. Por ser escrito em Python, o SPADE permite que os agentes e os adaptadores das ferramentas de análise sejam escritos na mesma linguagem.
+
+\item Identidade dos participantes. Como cada agente se conecta ao servidor com uma identidade própria, a origem de cada mensagem pode ser registrada, o que apoia a rastreabilidade das consultas entre os especialistas.
+
+\item Execução assíncrona. Os comportamentos assíncronos permitem que um agente aguarde a resposta de uma consulta ou o término de uma ferramenta sem interromper os demais agentes.
+\end{itemize}
+
+Na prova de conceito, o SPADE é empregado na construção dos agentes e no envio e recebimento das mensagens. O protótipo inicial utiliza quatro agentes, executados em processos separados, que são o Orquestrador, o agente de Qualidade, o de Segurança e o Auditor. O agente de Requisitos e Documentação será acrescentado na etapa de interpretação documental. A plataforma fornece a infraestrutura dos agentes, e os comportamentos e os critérios de análise são definidos pelo projeto.
+
+\subsection{XMPP e Prosody}
+\label{st-xmpp}
+
+XMPP é um protocolo para troca, quase em tempo real, de dados estruturados entre entidades de rede \cite{rfc6120}, e é o protocolo de transporte utilizado pelo SPADE. Prosody é um servidor XMPP com recursos documentados de configuração, módulos e certificados \cite{prosodyDocs}. Ele foi selecionado como servidor de mensagens do ambiente inicial.
+% CONFIRMAR: motivo da escolha do Prosody (por exemplo, leveza, facilidade de configuração em contêiner, uso em exemplos do SPADE).
+
+O servidor apenas transporta as mensagens. A comunicação P2P adotada neste trabalho é a relação lógica entre os agentes que formulam e respondem às consultas, e uma solicitação do agente de Segurança continua sendo respondida diretamente pelo agente de Qualidade ou pelo de Requisitos e Documentação.
+
+\subsection{SonarQube e SonarScanner}
+\label{st-sonar}
+
+As ferramentas de análise produzem os achados examinados pelos agentes especialistas, e cada agente utiliza uma ferramenta própria, de acordo com sua especialidade. O SonarQube produz medidas de qualidade e aponta violações das regras de análise. O SonarScanner executa a análise e envia um relatório ao servidor, que o processa em uma tarefa de segundo plano. Segundo a documentação, a análise só está completa quando essa tarefa termina \cite{sonarAnalysis99}. As medidas são calculadas em níveis distintos, como função e arquivo \cite{sonarMetrics99}. A ferramenta já integrava o ambiente do protótipo inicial e fornece as evidências do agente de Qualidade.
+
+\subsection{Semgrep}
+\label{st-semgrep}
+
+O Semgrep é uma ferramenta de análise estática que identifica padrões de código por meio de regras. Sua edição comunitária analisa Python, TypeScript, JavaScript e PHP \cite{semgrepDocs}. A ferramenta foi escolhida por cobrir com um único analisador as linguagens previstas para os repositórios da Empresa A, e substitui o Bandit, restrito a Python, utilizado no protótipo inicial. Será a fonte das evidências do agente de Segurança.
+
+Na edição comunitária, a documentação classifica essas linguagens como suportadas pela comunidade e limita a análise ao interior de cada função \cite{semgrepDocs}. O motor é distribuído sob a licença LGPL 2.1, e as regras mantidas pelo fabricante só podem ser usadas para fins internos \cite{semgrepLicensing}. Essas condições serão registradas como limitações da cobertura e consideradas na aplicação da pesquisa.
+
+\subsection{Ferramentas de análise de dependências}
+\label{st-dependencias}
+
+A análise de dependências identifica os componentes de terceiros e suas versões e os relaciona a vulnerabilidades conhecidas \cite{blackIr8397}. Como cada ecossistema de pacotes tem seu próprio gerenciador, são consideradas ferramentas específicas. O pip-audit, o npm audit e o Composer audit consultam vulnerabilidades conhecidas nas dependências de projetos Python, JavaScript ou TypeScript e PHP, respectivamente \cite{pipAuditDocs,npmAuditDocs,composerAuditDocs}. O Trivy verifica vulnerabilidades, segredos e configurações, conforme o alvo e o modo escolhidos \cite{trivyDocs}, e pode ampliar a cobertura. Essas ferramentas ainda não integram o protótipo, e a seleção dependerá dos gerenciadores de pacotes encontrados nos repositórios.
+
+\subsection{Modelo de linguagem e execução local}
+\label{st-llm}
+
+O agente de Requisitos e Documentação utilizará um modelo de linguagem para interpretar os documentos do projeto e fornecer o contexto documental dos achados. Para executar o modelo, está em avaliação o Ollama, ferramenta que oferece uma interface de programação para integrar aplicações a modelos de linguagem executados localmente \cite{ollamaApi}. A execução local foi preferida por manter os documentos da organização no ambiente definido para a pesquisa. O modelo ainda será selecionado, e o tamanho do contexto será um dos critérios, pois um contexto maior aumenta a memória necessária para executar o modelo \cite{ollamaContext}.
+
+\subsection{Infraestrutura e versionamento}
+\label{st-infra}
+
+O Git conserva o histórico dos repositórios e permite relacionar o código a uma revisão identificada \cite{gitAbout}. Ele é utilizado no versionamento do protótipo e na identificação do \textit{commit} examinado em cada auditoria. O Docker Compose define e executa aplicações com múltiplos contêineres, reunindo serviços, redes e volumes em um arquivo YAML \cite{dockerCompose}, e é utilizado na configuração dos serviços do protótipo, como o servidor de mensagens e o SonarQube.
 
 \section{Ferramentas de Modelagem}
 \label{st-modelagem}
 
-\subsection{UML, draw.io e PlantUML}
-\label{st-3-2-1}
+A arquitetura é modelada em UML, linguagem gráfica especificada pelo \textit{Object Management Group} para visualizar, especificar, construir e documentar sistemas \cite{omgUml}. O diagrama de componentes é elaborado no draw.io, ferramenta que conserva os diagramas em formato editável e exporta figuras em formatos como SVG e PDF \cite{drawioExport}. O diagrama de sequência é mantido em PlantUML, ferramenta em que o diagrama é definido inteiramente em texto \cite{plantumlSequence}. Os diagramas são apresentados no capítulo da Proposta.
 
-A arquitetura é modelada em UML, linguagem gráfica especificada pelo \textit{Object Management Group} para visualizar, especificar, construir e documentar sistemas \cite{omgUml}. São usados dois diagramas. O diagrama de componentes mostra os agentes, as ferramentas e os artefatos, com suas relações. O diagrama de sequência mostra a ordem das mensagens em uma auditoria.
+\section{Ferramentas de Apoio à Pesquisa e à Escrita}
+\label{st-tcc}
 
-O diagrama de componentes é elaborado no draw.io, também conhecido como diagrams.net. A ferramenta conserva os diagramas em formato editável e exporta figuras em formatos como SVG e PDF \cite{drawioExport}. O diagrama de sequência é mantido em PlantUML, ferramenta em que o diagrama é definido inteiramente em texto e desenhado automaticamente \cite{plantumlSequence}.
-
-Os diagramas distinguem a arquitetura alvo do recorte implementado no protótipo inicial. Os arquivos editáveis são conservados para acompanhar a evolução do projeto, e as figuras são apresentadas e discutidas no capítulo da Proposta.
-
-\section{Ferramentas de Desenvolvimento}
-\label{st-desenvolvimento}
-
-\subsection{Python}
-\label{st-3-3-1}
-
-Python é a linguagem de implementação dos agentes, dos adaptadores das ferramentas e do processamento dos registros da auditoria. Sua biblioteca \texttt{asyncio} oferece recursos de programação assíncrona, comunicação de rede e controle de subprocessos \cite{pythonAsyncio}, necessários ao envio de mensagens e ao acompanhamento das ferramentas externas.
-
-A escolha da linguagem decorre do uso de SPADE, apresentado a seguir. O protótipo inicial registra o uso de Python 3.13.7. As versões efetivamente utilizadas na aplicação da pesquisa serão conservadas junto aos registros de execução.
-
-A linguagem de implementação é independente das linguagens dos repositórios analisados. A cobertura de Python, TypeScript e PHP depende das ferramentas, dos artefatos disponíveis e da configuração de cada análise. A demonstração inicial utiliza um repositório sintético em Python, anterior à aplicação em repositórios autorizados da Empresa A.
-
-\subsection{SPADE}
-\label{st-3-3-2}
-
-SPADE, sigla de \textit{Smart Python Agent Development Environment}, é uma plataforma de sistemas multiagentes escrita em Python e baseada em XMPP \cite{palanca2020,spadeDocs}. Sua documentação descreve um modelo de agentes organizado por comportamentos e apoiado em \texttt{asyncio}, e informa que a plataforma pode ser usada com qualquer servidor XMPP \cite{spadeDocs}.
-
-Na prova de conceito, SPADE é empregado na construção dos agentes e no envio e recebimento das mensagens. O protótipo inicial utiliza a versão 4.1.4 e mantém quatro participantes em processos separados, que são o Orquestrador, o agente de Qualidade, o de Segurança e o Auditor. O agente de Requisitos e Documentação integra a arquitetura alvo e será acrescentado na etapa de interpretação documental.
-
-Essa separação conserva a identidade dos participantes e permite acompanhar a origem das mensagens. As consultas P2P são encaminhadas entre os especialistas. O Orquestrador organiza a execução, e o Auditor recebe as conclusões para consolidação. SPADE fornece a infraestrutura de agentes, e os comportamentos e os critérios de análise são especificados pelo projeto.
-
-\subsection{XMPP e Prosody}
-\label{st-3-3-3}
-
-XMPP é um protocolo que permite a troca, quase em tempo real, de dados estruturados entre duas ou mais entidades de rede \cite{rfc6120}. É o protocolo de transporte utilizado por SPADE. Prosody é o servidor XMPP selecionado para o ambiente inicial, com recursos documentados de configuração, módulos e certificados \cite{prosodyDocs}. Como o protótipo usa uma compilação de desenvolvimento do servidor, o pacote ou a imagem utilizados serão identificados nos registros do ambiente, para permitir a reprodução da configuração. Cada agente utiliza uma identidade própria na comunicação.
-
-A comunicação P2P adotada é a relação lógica entre os agentes que formulam e respondem às consultas. O servidor apenas transporta as mensagens. Uma solicitação do agente de Segurança continua sendo respondida diretamente pelo agente de Qualidade ou pelo de Requisitos e Documentação.
-
-O protótipo registra os identificadores das auditorias e das solicitações, para relacionar perguntas, respostas e conclusões. Tempos de espera e estados de falha permitem identificar interações não concluídas. Esses registros serão utilizados na análise do funcionamento da arquitetura, conforme os procedimentos definidos na Metodologia.
-
-\subsection{Docker Compose}
-\label{st-3-3-4}
-
-Docker Compose permite definir e executar aplicações compostas por múltiplos contêineres, reunindo configurações de serviços, redes e volumes em um arquivo YAML \cite{dockerCompose}. No protótipo, esse recurso organiza os serviços de infraestrutura necessários à comunicação e à análise de código.
-
-As configurações do ambiente são conservadas para identificar os serviços utilizados e suas versões. As credenciais de acesso são fornecidas por configuração externa ao código-fonte, incluindo variáveis de ambiente para os \textit{tokens} exigidos pelas ferramentas. Assim, os valores de acesso não integram os relatórios da pesquisa.
-
-\subsection{SonarQube e SonarScanner}
-\label{st-3-3-5}
-
-SonarQube produz medidas de qualidade e aponta violações das regras de análise. O SonarScanner executa a análise configurada e envia um relatório ao servidor, que o processa em uma tarefa de segundo plano. Segundo a documentação, uma análise só está completa quando essa tarefa termina \cite{sonarAnalysis99}.
-
-No protótipo inicial, SonarQube fornece as evidências consultadas pelo agente de Qualidade. O adaptador acompanha o processamento da tarefa e relaciona os resultados à análise e à revisão do repositório. Assim, o fim da execução do \textit{scanner} não é tomado como sinal de que os resultados já estão disponíveis.
-
-As medidas conservam sua granularidade. Um resultado agregado por arquivo é interpretado nesse nível, sem atribuição automática a uma função específica. O estado do \textit{Quality Gate} é conservado como informação da ferramenta. O parecer o apresenta sem convertê-lo em veredito, e a classificação cabe ao responsável humano.
-
-O ambiente inicial registra SonarQube Community 9.9.8.100196 e SonarScanner CLI 8.1.0.6389. A cobertura efetiva dos repositórios selecionados será verificada antes da aplicação, pois depende da linguagem e da edição da ferramenta.
-
-\subsection{Semgrep}
-\label{st-3-3-6}
-
-Semgrep é uma ferramenta de análise estática que identifica padrões de código por meio de regras e produz um relatório dos achados. Sua edição comunitária analisa Python, TypeScript, JavaScript e PHP. A documentação classifica essas linguagens, nessa edição, como suportadas pela comunidade, sem prioridade nas atualizações de regras e do motor, e limita a análise ao interior de cada função \cite{semgrepDocs}. Essas duas características serão registradas como limitações da cobertura.
-
-O Semgrep será a fonte de evidências de segurança estática para o agente de Segurança. Ele substitui o Bandit, ferramenta restrita a Python utilizada no protótipo inicial. O uso de uma única ferramenta para as três linguagens evita adaptadores distintos e uniformiza o formato das evidências. Os resultados preservam a identificação da regra, a localização e as classificações emitidas pela ferramenta. O especialista pode consultar medidas do SonarQube referentes ao mesmo arquivo para contextualizar um achado, conservada a distinção entre complexidade e evidência de vulnerabilidade.
-
-O motor da edição comunitária é distribuído sob a licença LGPL 2.1, e as regras mantidas pelo fabricante são cobertas por uma licença que restringe seu uso a fins internos \cite{semgrepLicensing}. Esse uso será considerado nas condições de aplicação da pesquisa. As regras serão mantidas em cópia local versionada, e o conjunto de regras e sua versão serão registrados em cada análise, pois a cobertura depende das regras disponíveis para cada linguagem. O protótipo não executa a aplicação auditada nem modifica seus arquivos.
-
-\subsection{Ferramentas para Dependências e Ampliação de Cobertura}
-\label{st-3-3-7}
-
-\begin{sloppypar}
-A análise de dependências identifica os componentes e as versões que o software utiliza e os relaciona a vulnerabilidades conhecidas \cite{blackIr8397}. Essa integração ainda não compõe o protótipo inicial. As ferramentas do Quadro~\ref{quadro-ferramentas-dependencias} são candidatas e serão selecionadas conforme os manifestos e os gerenciadores encontrados nos repositórios.
-\end{sloppypar}
-
-\begin{table}[p]
-\centering
-\caption{Ferramentas candidatas à análise de dependências e ampliação de cobertura}
-\label{quadro-ferramentas-dependencias}
-\begingroup
-\footnotesize
-\SingleSpacing
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
-\hline
-\textbf{Ferramenta} & \textbf{Aplicação prevista} & \textbf{Condição de utilização} \\ \hline
-pip-audit & Consulta de vulnerabilidades conhecidas em dependências Python & Identificação das dependências e versões em formato compatível \\ \hline
-npm audit & Auditoria de dependências de projetos que utilizam npm, inclusive aplicações TypeScript & Presença de estrutura de dependências compatível com npm \\ \hline
-Composer audit & Consulta de avisos de segurança associados a pacotes gerenciados por Composer & Projeto PHP que utilize Composer e permita identificar as versões analisadas \\ \hline
-Trivy & Verificações adicionais de vulnerabilidades, segredos e configurações, conforme alvo e modo & Seleção explícita do escopo e dos formatos suportados \\ \hline
-\end{tabularx}
-\endgroup
-\legend{Fonte: elaboração do autor.}
-\end{table}
-
-\begin{sloppypar}
-As funções dessas ferramentas são descritas em suas documentações oficiais \cite{pipAuditDocs,npmAuditDocs,composerAuditDocs,trivyDocs}. Relatórios sobrepostos de ferramentas diferentes não serão tratados como evidências independentes de um mesmo problema. A data da consulta e a identificação das bases de vulnerabilidades utilizadas serão conservadas.
-\end{sloppypar}
-
-Os adaptadores são configurados apenas para coleta de evidências. Comandos de correção automática, de atualização de pacotes ou de execução da aplicação não integram o procedimento. A ausência de um manifesto compatível será registrada como limitação de cobertura, e não como ausência de vulnerabilidades.
-
-\subsection{Modelo de Linguagem e Execução Local}
-\label{st-3-3-8}
-
-O agente de Requisitos e Documentação utiliza um modelo de linguagem para interpretar documentos textuais a partir das consultas dos especialistas. Como em \citeonline{yesil2026}, a extração de informações dos documentos fica separada da decisão orientada por regras. O modelo fornece contexto. A sinalização de pontos de atenção permanece com as regras do Auditor, e a decisão final, com o responsável humano.
-
-A execução local do modelo está em avaliação. Entre os recursos considerados está o Ollama, que oferece uma interface de programação para integrar aplicações a modelos executados localmente \cite{ollamaApi}. Nessa configuração, o agente encaminha as consultas ao serviço de inferência e recebe as respostas para processamento e registro. A execução local mantém o processamento dos documentos no ambiente definido para a pesquisa, observadas as condições de acesso e de tratamento dos dados da organização.
-
-A seleção do modelo considerará a capacidade de interpretar documentos em português, a fundamentação das respostas nos trechos fornecidos, o reconhecimento de informação insuficiente, o tempo de resposta e o consumo de memória. O tamanho do contexto também será considerado, pois um contexto maior aumenta a memória necessária para executar o modelo \cite{ollamaContext}. A adoção do Ollama e a escolha do modelo dependem da verificação de sua adequação à tarefa.
-
-Serão registrados a identificação e a versão do modelo, a quantização, quando utilizada, o tamanho de contexto e os parâmetros de geração, juntamente com as entradas e as respostas produzidas. A integração deverá receber a consulta do especialista, identificar os documentos pertinentes e conservar os trechos utilizados na resposta. Deverá também registrar informação insuficiente, resposta sem apoio documental e conflito entre fontes, estados que distinguem um contexto recuperado de uma conclusão que não pôde ser sustentada.
-
-A recuperação aumentada por geração, empregada por \citeonline{yesil2026}, é uma possibilidade de implementação. Sua adoção, o mecanismo de busca e a eventual indexação serão especificados após a definição do conjunto de documentos, e não há banco vetorial escolhido nesta etapa. Os critérios de aceitação das respostas e a ligação entre arquivos e componentes são detalhados no capítulo da Proposta.
-
-\subsection{Versionamento, Registros e Apresentação}
-\label{st-3-3-9}
-
-Git é empregado na identificação das revisões dos repositórios examinados e no acompanhamento das alterações do projeto. O sistema conserva o histórico dos repositórios e permite relacionar o código a uma revisão identificada \cite{gitAbout}. Na auditoria, o identificador do \textit{commit} delimita a versão analisada.
-
-O protótipo utiliza arquivos JSON para evidências e pareceres e registros JSONL para eventos da execução. As regras do Auditor são armazenadas em YAML, o que permite conservar a política utilizada em cada auditoria. As dependências do código incluem Pydantic, HTTPX e PyYAML, usadas, respectivamente, na validação estrutural dos dados, nas consultas HTTP às ferramentas e no carregamento das políticas.
-
-A identificação do \textit{commit}, das ferramentas e das configurações relaciona o parecer à versão examinada. Os resultados originais das ferramentas são conservados junto às evidências normalizadas e às mensagens pertinentes. Assim, o relatório permite localizar a fonte de uma afirmação e acompanhar sua participação na conclusão.
-
-Para a apreciação humana estruturada, será preparado um material de leitura com o parecer, as evidências citadas, os trechos documentais e as regras acionadas. O responsável humano avaliará a clareza, a coerência e a fundamentação desse material, sem realizar uma nova auditoria. O instrumento de registro das apreciações é definido na Metodologia.
-
-A apresentação consolidada das auditorias poderá incluir um painel, acompanhado dos relatórios detalhados. A tecnologia dessa interface ainda não foi selecionada. Ela deverá preservar o acesso às evidências e às limitações de cada execução, para que a visão agregada não oculte diferenças de cobertura entre repositórios.
+A monografia é redigida em LaTeX, sistema de preparação de documentos com recursos para textos científicos, referências cruzadas e bibliografias \cite{latexProject}. As referências são organizadas no Zotero, que permite reunir registros bibliográficos em coleções e associar arquivos e notas a cada item \cite{zoteroGuide}. A comunicação com a orientadora e o envio das versões para revisão são feitos pelo Slack, plataforma de comunicação que reúne pessoas, processos e dados em uma interface conversacional \cite{slackWhatIs}.
+% Acrescente aqui outras ferramentas que você realmente usou (Microsoft Teams, Overleaf, bases como Periódicos CAPES ou Google Acadêmico).
+% Se a Milene quiser o esclarecimento sobre IA generativa neste capítulo, ele cabe aqui, dizendo em que etapas foi usada e que o conteúdo foi revisado pelo autor.
 
 \section{Resumo do Capítulo}
 \label{st-resumo}
 
-O suporte tecnológico reúne recursos de redação, de modelagem e de implementação. Python e SPADE sustentam os agentes, e Prosody transporta as mensagens por XMPP. SonarQube fornece as evidências de qualidade, e o Semgrep, as de segurança estática. A interpretação documental e a análise de dependências serão integradas nas etapas seguintes, conforme a seleção dos componentes e o escopo dos repositórios. O Quadro~\ref{quadro-tecnologias} resume a finalidade e a situação de cada tecnologia.
+Neste capítulo, foram apresentadas as tecnologias de desenvolvimento, de modelagem e de apoio à pesquisa. O SPADE e o protocolo XMPP sustentam os agentes e suas mensagens, o SonarQube e o Semgrep fornecem os achados de qualidade e de segurança, e a análise de dependências e o modelo de linguagem serão integrados nas etapas seguintes. O Quadro~\ref{quadro-tecnologias} resume a finalidade, o link e a versão de cada ferramenta.
 
-\begin{table}[p]
+\begin{table}[htbp]
 \centering
-\caption{Tecnologias e recursos utilizados ou previstos no trabalho}
+\caption{Ferramentas do trabalho, suas finalidades e versões}
 \label{quadro-tecnologias}
 \begingroup
 \footnotesize
 \SingleSpacing
 \setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X>{\centering\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}p{3.0cm}}
 \hline
-\textbf{Tecnologia ou recurso} & \textbf{Categoria} & \textbf{Finalidade no trabalho} & \textbf{Versão ou situação} \\ \hline
-LaTeX & Apoio geral & Redação e formatação da monografia & Projeto de redação existente; distribuição a registrar \\ \hline
-Zotero & Apoio geral & Organização do acervo e das referências & Em uso; versão a registrar \\ \hline
-UML, draw.io e PlantUML & Modelagem & Diagramas de componentes e de sequência & Em uso; versões a registrar \\ \hline
-Python & Desenvolvimento & Implementação dos agentes e adaptadores & 3.13.7 no protótipo inicial \\ \hline
-SPADE & Desenvolvimento & Comportamentos e mensagens dos agentes & 4.1.4 no protótipo inicial \\ \hline
-Prosody & Desenvolvimento & Servidor XMPP & 13.0 nightly build 100 no protótipo inicial \\ \hline
-Docker Compose & Desenvolvimento & Configuração dos serviços & Utilizado; versão a registrar \\ \hline
-SonarQube Community & Desenvolvimento & Medidas e achados de código & 9.9.8.100196 no protótipo inicial \\ \hline
-SonarScanner CLI & Desenvolvimento & Envio das análises ao SonarQube & 8.1.0.6389 no protótipo inicial \\ \hline
-Semgrep (edição comunitária) & Desenvolvimento & Análise estática de segurança em Python, TypeScript e PHP & Integração pendente; versão a registrar. O protótipo inicial utilizou Bandit 1.9.4 \\ \hline
-pip-audit, npm audit, Composer audit e Trivy & Desenvolvimento & Análise de dependências e ampliação da cobertura & Candidatos; seleção e integração pendentes \\ \hline
-Ollama e modelo de linguagem & Desenvolvimento & Serviço de interpretação documental & Em avaliação; modelo a selecionar \\ \hline
-Git & Desenvolvimento & Histórico e identificação das revisões & Utilizado; versão a registrar \\ \hline
-JSON, JSONL e YAML & Formatos de apoio à implementação & Evidências, eventos e políticas & Utilizados no protótipo inicial \\ \hline
-Painel e material de leitura dos pareceres & Apresentação & Consulta aos resultados e às evidências & Tecnologia da interface e instrumento a definir \\ \hline
+\textbf{Ferramenta} & \textbf{Finalidade} & \textbf{Link} & \textbf{Versão} \\ \hline
+\multicolumn{4}{l}{\textit{Desenvolvimento}} \\ \hline
+Python & Implementação dos agentes e adaptadores & \href{https://www.python.org/}{Acesso} & 3.13.7 \\
+Pydantic & Validação das evidências e conclusões & \href{https://pydantic.dev/docs/validation/latest/}{Acesso} & A registrar \\
+HTTPX & Consultas às interfaces das ferramentas & \href{https://www.python-httpx.org/}{Acesso} & A registrar \\
+PyYAML & Carregamento das regras do Auditor & \href{https://pyyaml.org/}{Acesso} & A registrar \\
+SPADE & Plataforma dos agentes e das mensagens & \href{https://spade-mas.readthedocs.io/}{Acesso} & 4.1.4 \\
+Prosody & Servidor XMPP & \href{https://prosody.im/}{Acesso} & 13.0 (\textit{nightly build} 100) \\
+SonarQube Community & Medidas e achados de qualidade & \href{https://www.sonarsource.com/products/sonarqube/}{Acesso} & 9.9.8.100196 \\
+SonarScanner CLI & Envio das análises ao SonarQube & \href{https://docs.sonarsource.com/sonarqube-server/9.9/analyzing-source-code/scanners/sonarscanner/}{Acesso} & 8.1.0.6389 \\
+Semgrep & Achados de segurança estática & \href{https://semgrep.dev/}{Acesso} & Integração pendente \\
+pip-audit, npm audit, Composer audit & Vulnerabilidades em dependências & \href{https://github.com/pypa/pip-audit}{Acesso} & Candidatas \\
+Trivy & Ampliação da cobertura & \href{https://trivy.dev/}{Acesso} & Candidata \\
+Ollama & Execução local do modelo de linguagem & \href{https://ollama.com/}{Acesso} & Em avaliação \\
+Git & Versionamento e identificação do \textit{commit} & \href{https://git-scm.com/}{Acesso} & A registrar \\
+Docker Compose & Configuração dos serviços & \href{https://docs.docker.com/compose/}{Acesso} & A registrar \\ \hline
+\multicolumn{4}{l}{\textit{Modelagem}} \\ \hline
+UML & Linguagem dos diagramas & \href{https://www.omg.org/spec/UML/2.5.1}{Acesso} & 2.5.1 \\
+draw.io & Diagrama de componentes & \href{https://www.drawio.com/}{Acesso} & A registrar \\
+PlantUML & Diagrama de sequência & \href{https://plantuml.com/}{Acesso} & A registrar \\ \hline
+\multicolumn{4}{l}{\textit{Apoio à pesquisa e à escrita}} \\ \hline
+LaTeX & Redação da monografia & \href{https://www.latex-project.org/}{Acesso} & A registrar \\
+Zotero & Organização das referências & \href{https://www.zotero.org/}{Acesso} & A registrar \\
+Slack & Comunicação com a orientação & \href{https://slack.com/}{Acesso} & Não se aplica \\ \hline
 \end{tabularx}
 \endgroup
-\legend{Fonte: elaboração do autor, a partir do projeto e dos registros do protótipo inicial.}
+\legend{Fonte: elaboração do autor.}
 \end{table}
-
-As versões indicadas documentam o ambiente já empregado e serão atualizadas conforme a configuração efetiva da aplicação da pesquisa. Os procedimentos de avaliação e apreciação humana são definidos na Metodologia. A arquitetura, os diagramas e os critérios de consolidação dos pareceres são detalhados no capítulo da Proposta.
