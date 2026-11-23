@@ -1,3 +1,4 @@
+% Capítulo 2, versão 8 (19 nov. 2026). Base: versão 7. Comentários "% V8" marcam o que mudou.
 % Capítulo 2, versão 7 (18 nov. 2026). Base: revisão 6, com as edições do autor de 17 e 18 nov. 2026.
 % Comentários "% V7" marcam o que mudou nesta versão.
 % Capítulo 2, versão 6 (16 nov. 2026).
@@ -44,7 +45,7 @@ Parte dessas características é examinada por métricas. A complexidade ciclom�
 
 A segunda atividade procura problemas de segurança no código. O \textit{Secure Software Development Framework} (SSDF), do NIST, recomenda revisar ou analisar o código para identificar vulnerabilidades e verificar a conformidade com os requisitos de segurança. Recomenda também registrar e triar os problemas encontrados \cite{nistSsdf}. Essa análise pode ser estática ou dinâmica. A análise estática raciocina sobre o código como está escrito, sem depender de sua execução, e a análise dinâmica se baseia na execução do programa \cite{blackIr8397}.
 
-Os achados da análise estática precisam ser examinados antes de sustentar uma conclusão. Em entrevistas com 20 desenvolvedores, \citeonline{johnson2013} identificaram os falsos positivos e a forma de apresentação dos alertas entre as barreiras ao uso dessas ferramentas. Um alerta de ferramenta, portanto, indica um ponto a examinar e não constitui, por si só, um problema confirmado.
+Os achados da análise estática precisam ser examinados antes de sustentar uma conclusão. Em entrevistas com 20 desenvolvedores, \citeonline{johnson2013} identificaram os falsos positivos e a forma de apresentação dos alertas entre as barreiras ao uso dessas ferramentas. % V8: a frase final saiu, pois repetia o fim do parágrafo sobre achados na Seção 2.1.
 
 % V5: a introdução final prevê confrontar os achados com boas práticas da comunidade de segurança. As duas fontes foram conferidas em 16 nov. 2026.
 Os achados de segurança costumam ser classificados por referências mantidas pela comunidade. A \textit{Common Weakness Enumeration} (CWE) é uma lista de fraquezas comuns de software e de hardware. Uma fraqueza é uma condição que, em certas circunstâncias, pode contribuir para a introdução de vulnerabilidades \cite{cweAbout}. O OWASP Top 10, em sua edição de 2025, agrupa 248 dessas fraquezas em dez categorias de risco para aplicações \cite{owaspTop10}. Neste trabalho, essas referências servem para confrontar os achados documentados, isto é, para verificar se a classificação registrada no parecer corresponde à fonte que a ferramenta indica.
@@ -69,7 +70,8 @@ Outro trabalho próximo é o de \citeonline{carvalho2026}, que discutem o uso de
 % V6: fechamento reescrito para explicitar a cadeia achado, evidência, contexto documental, conclusão do especialista e parecer.
 Neste trabalho, a auditoria de repositório reúne essas atividades, e seus termos formam uma cadeia. As ferramentas produzem achados de qualidade, de segurança e de dependências, e as evidências permitem conferi-los. Falta, porém, saber o que cada achado significa para a organização. Na metodologia de avaliação de riscos da OWASP, o impacto para o negócio é, em última análise, o fator mais importante \cite{owaspRiskRating}. Por isso, a proposta acrescenta aos achados o contexto documental, isto é, as informações registradas sobre a finalidade e a criticidade do componente examinado.
 
-Um exemplo ilustra essa relação. Quando uma ferramenta aponta uma vulnerabilidade em um componente, tem-se um achado, e o relatório da ferramenta e o trecho de código apontado são as evidências que permitem conferi-lo. Se os documentos do projeto informam que o componente trata dados pessoais, essa informação compõe o contexto documental do achado e ajuda a interpretá-lo, pois a mesma vulnerabilidade tem outro peso em um componente com essa finalidade. O parecer reúne esses elementos e apoia a decisão do responsável humano, sem substituí-la.
+Um exemplo ilustra essa relação. % V8: frase encurtada, pois repetia a definição de evidência.
+Quando uma ferramenta aponta uma vulnerabilidade em um componente, tem-se um achado, que pode ser conferido pelo relatório da ferramenta e pelo trecho de código. Se os documentos do projeto informam que o componente trata dados pessoais, essa informação compõe o contexto documental do achado e ajuda a interpretá-lo, pois a mesma vulnerabilidade tem outro peso em um componente com essa finalidade. O parecer reúne esses elementos e apoia a decisão do responsável humano, sem substituí-la.
 
 \section{Diversidade das Automações, \textit{Low-code/No-code} e \textit{Shadow AI}}
 \label{rt-2-2}
@@ -83,7 +85,7 @@ O desenvolvimento por usuários de negócio e o uso não autorizado de IA são f
 \section{Sistemas Multiagentes}
 \label{rt-2-3}
 
-A auditoria de repositório envolve atividades distintas, e cada uma pede um tipo de conhecimento. Um sistema multiagente permite distribuir essas atividades entre participantes especializados. Esta seção define agente e sistema multiagente, apresenta um modelo usado nos trabalhos relacionados e delimita o papel do modelo de linguagem na proposta.
+A auditoria de repositório envolve atividades distintas, e cada uma pede um tipo de conhecimento. Um sistema multiagente permite distribuir essas atividades entre participantes especializados. Esta seção define agente e sistema multiagente, discute a organização semi-centralizada adotada, apresenta um modelo usado nos trabalhos relacionados e delimita o papel do modelo de linguagem na proposta. % V8: a abertura passou a anunciar a discussão sobre organização semi-centralizada.
 
 \subsection{Agentes de software e responsabilidades}
 \label{rt-2-3-1}
@@ -102,7 +104,8 @@ Essa distribuição pede uma arquitetura compatível com ela. Segundo \citeonlin
 % V6: fechamento reduzido. Os papéis de cada agente ficam no Capítulo 5.
 A distribuição de funções entre agentes também é tratada na literatura como medida de segurança. \citeonline{mosciatti2026} adotam a separação de deveres como princípio de projeto. Nenhum agente reúne o contexto completo da tarefa, todas as credenciais e o acesso irrestrito às ferramentas. Trata-se de uma separação de responsabilidades dentro do sistema, que limita o efeito de um comportamento indevido. Ela não equivale à independência de auditoria discutida na seção~\ref{rt-2-1}.
 
-Nesta proposta, as atividades da auditoria são distribuídas entre agentes especialistas, que se consultam diretamente por P2P, e o controle é semi-centralizado no Agente Auditor, que consolida o parecer. A arquitetura é detalhada no Capítulo~\ref{cap-proposta}.
+% V8: o Orquestrador entrou na frase, para ficar coerente com a Seção 2.4.2 e com o diagrama do Capítulo 5. Confirme com a orientadora.
+Nesta proposta, as atividades da auditoria são distribuídas entre agentes especialistas, que se consultam diretamente por P2P. O controle é semi-centralizado, pois o Agente Orquestrador organiza as tarefas e o Agente Auditor consolida as conclusões em um parecer. A arquitetura é detalhada no Capítulo~\ref{cap-proposta}.
 
 \subsection{Modelos de agentes}
 \label{rt-2-3-2}
@@ -119,7 +122,8 @@ Esta proposta aproveita dessa literatura a especialização dos agentes e a cons
 Um modelo de linguagem pode servir a um agente como recurso para interpretar textos. No trabalho de \citeonline{yesil2026}, modelos de linguagem extraem informações dos documentos, e a decisão de autorização fica em uma camada de regras explícitas. Interpretar o conteúdo e decidir são, portanto, funções separadas.
 
 % V6: fechamento reduzido. Os campos das respostas e as regras de associação ficam na Seção 5.6.
-A separação tem um limite que os próprios autores reconhecem em parte. Um documento é uma entrada externa, e seu conteúdo pode conter trechos que um modelo de linguagem interpreta como instruções. Esse risco é conhecido como injeção indireta de \textit{prompt}. Entre as medidas indicadas para reduzi-lo estão separar e identificar o conteúdo externo, validar o formato da saída por código determinístico e restringir os privilégios do modelo ao mínimo necessário \cite{owaspLlm01}.
+% V8: o limite reconhecido pelos autores ficou explícito (Yesil et al., seção sobre a separação entre planos e LLM).
+A separação tem um limite, que os autores reconhecem em parte. Segundo eles, quem elabora uma consulta maliciosa pode influenciar o que o modelo extrai, embora não consiga alterar as regras que decidem o acesso \cite{yesil2026}. Um documento também é uma entrada externa, e seu conteúdo pode conter trechos que um modelo de linguagem interpreta como instruções. Esse risco é conhecido como injeção indireta de \textit{prompt}. Entre as medidas indicadas para reduzi-lo estão separar e identificar o conteúdo externo, validar o formato da saída por código determinístico e restringir os privilégios do modelo ao mínimo necessário \cite{owaspLlm01}.
 
 Esta pesquisa segue a mesma separação. O modelo de linguagem é usado apenas na interpretação dos documentos do projeto, para fornecer o contexto documental de um achado, e a recomendação resulta de regras explícitas. Uma menção genérica a uma funcionalidade em um documento não indica quais arquivos a implementam, e uma criticidade declarada é diferente de uma criticidade inferida.
 
@@ -193,42 +197,16 @@ Neste trabalho, a explicabilidade é tratada como rastreabilidade estrutural. O 
 \section{Trabalhos Relacionados}
 \label{rt-2-6}
 
-% V6: seção reescrita. Cada trabalho é descrito pelo problema, pelo método, pelos agentes e sua comunicação, pela consolidação, pela rastreabilidade e pela avaliação relatada.
-% As descrições foram conferidas nos PDFs locais. Só se afirma a ausência de um elemento quando o próprio texto do trabalho a sustenta.
-As seções anteriores apresentaram os conceitos que sustentam a proposta. Esta seção examina nove trabalhos selecionados pela pesquisa bibliográfica descrita na Seção ??. Cada um é descrito pelo problema que trata, pela forma como organiza agentes e comunicação, pela maneira de consolidar resultados, pelos registros que conserva e pela avaliação que relata. A proximidade temática não significa equivalência de domínio, de método ou de resultado.
+% V8: seção enxuta. Os trabalhos já usados nas seções anteriores não são descritos de novo. Ficam só o método e a avaliação de cada um, a tabela e o posicionamento.
+% V8: as subseções 2.6.1 a 2.6.5 saíram. Se outro capítulo usa \ref para os rótulos rt-2-6-1 a rt-2-6-5, troque por rt-2-6.
+% V8: confira se o Capítulo 4 descreve a pesquisa bibliográfica. A versão 7 apontava para uma seção inexistente ("Seção ??").
+Esta seção compara com a proposta nove trabalhos identificados na pesquisa bibliográfica descrita no Capítulo~\ref{cap-metodologia}, vários deles já usados nas seções anteriores. A comparação considera como cada trabalho organiza agentes e comunicação, como consolida resultados, que registros conserva e que avaliação relata. A proximidade temática não significa equivalência de domínio, de método ou de resultado.
 
-\subsection{Apoio à decisão sobre evidências de software}
-\label{rt-2-6-1}
+Dois trabalhos tratam da passagem dos resultados de ferramentas para uma decisão. O módulo de \citeonline{zuev2025}, apresentado na Seção~\ref{rt-2-1-3}, calcula indicadores e aplica regras sobre os relatórios das análises. O artigo não descreve uma arquitetura de agentes, e o experimento, com cerca de 100 varreduras, ilustra o funcionamento do módulo sem relatar o julgamento de especialistas sobre as recomendações. O GateLens, de \citeonline{khoee2026}, analisa dados de \textit{releases} de software automotivo e usa álgebra relacional como representação intermediária entre a consulta em linguagem natural e o código executável, o que permite inspecionar cada transformação. Os autores contrastam essa escolha com sistemas multiagentes, e a avaliação compara as respostas com um gabarito preparado por especialistas.
 
-\citeonline{zuev2025} tratam da decisão de incorporar código ao ramo principal de um projeto. A abordagem reúne os relatórios de análises estática e dinâmica em um módulo de apoio à decisão, que calcula indicadores e aplica regras para apresentar uma recomendação ao usuário. O experimento relatado usa uma amostra de cerca de 100 varreduras e ilustra o funcionamento do módulo. O artigo não descreve uma arquitetura de agentes, e a seção experimental não relata o julgamento de especialistas sobre as recomendações. Para esta pesquisa, interessa a passagem dos resultados das ferramentas para uma recomendação apoiada em regras.
+Três trabalhos distribuem a tarefa entre agentes especializados. Em \citeonline{yesil2026}, um agente orquestrador coordena o fluxo, agentes especializados fazem as verificações textuais e visuais, e um agente de decisão combina os resultados por disjunção lógica. A avaliação usa 167 pôsteres de seis instituições, e o fluxo descrito não inclui consultas entre os especialistas para rever suas conclusões. Em \citeonline{mosciatti2026}, cada fase de uma operação de segurança fica com um agente que tem memória, permissões e ferramentas isoladas, e o protótipo de rotação de senhas foi avaliado em 12 aplicações. \citeonline{lazarin2025} usam agentes baseados em Jason \cite{bordini2007}, com mensagens KQML por correio eletrônico, e demonstram a arquitetura em provas de conceito, em um domínio distinto da auditoria.
 
-\citeonline{khoee2026} apresentam o GateLens, voltado à análise de dados de \textit{releases} de software automotivo. A solução usa álgebra relacional como representação intermediária entre a consulta em linguagem natural e o código executável, o que permite inspecionar cada transformação. Os autores contrastam essa escolha com sistemas multiagentes e de planejamento, e a solução não depende de orquestração entre agentes. A avaliação compara as respostas a consultas com um gabarito preparado por especialistas. Para esta pesquisa, interessa a possibilidade de verificar o caminho entre a entrada e o resultado.
-
-\subsection{Comunicação e consolidação por agentes especializados}
-\label{rt-2-6-2}
-
-\citeonline{lazarin2025} tratam da interação entre pessoas e agentes embarcados. Os autores desenvolvem uma arquitetura de agente baseada em Jason \cite{bordini2007}, na qual mensagens KQML trafegam por protocolos de correio eletrônico. O trabalho demonstra a arquitetura em provas de conceito. Interessa à pesquisa a separação entre a intenção comunicativa da mensagem e o meio de transporte. O domínio é distinto da auditoria de repositórios.
-
-\citeonline{yesil2026} tratam do controle de acesso em recuperação aumentada por geração multimodal, técnica em que o modelo responde com apoio em documentos recuperados. Um agente orquestrador coordena o fluxo e não trata da autorização, que fica com agentes especializados em verificações textuais e visuais. Os agentes se comunicam por atos de fala, e um agente de decisão combina os resultados por disjunção lógica, isto é, o acesso é autorizado se uma das verificações o permitir. A lógica é expressa em planos que podem ser inspecionados. A avaliação usa 167 pôsteres de seis instituições. Interessa à pesquisa a separação entre coordenação, verificação especializada e consolidação. A regra de combinação, porém, responde ao problema de autorização, e o fluxo descrito não inclui a revisão das conclusões dos especialistas a partir de consultas entre eles.
-
-\subsection{Políticas e fluxos governáveis}
-\label{rt-2-6-3}
-
-\citeonline{ait2025} tratam da governança de projetos de software em que pessoas e agentes colaboram. Os autores propõem uma linguagem específica de domínio para representar participantes, papéis, escopos e políticas, com um mecanismo de decisão que aplica essas políticas, e apresentam uma prova de conceito. A avaliação da proposta é indicada como trabalho futuro. Interessa à pesquisa a forma como uma regra é ligada aos participantes e ao escopo em que vale.
-
-\citeonline{yan2025} tratam da aplicação de normas e de sanções do ponto de vista do agente. Os autores estendem uma linguagem de programação normativa, na qual normas e sanções são abstrações de primeira classe, e propõem uma arquitetura de agente BDI normativo. A proposta é aplicada a um estudo de caso, e a experimentação é deixada para trabalhos futuros. A distinção entre processar uma norma e aplicar uma sanção ajuda a delimitar um agente que emite um parecer e não executa consequências.
-
-\citeonline{rousek2026} apresenta um \textit{framework} conceitual para fluxos governáveis de apoio à decisão em defesa. O \textit{framework} tem três camadas, que são a decomposição explícita de tarefas, a vinculação das afirmações às evidências, com proveniência, e o controle delimitado, com registro e pontos de autorização. O autor declara que o estudo não valida o \textit{framework} empiricamente. A obra é usada aqui como referência conceitual para os registros e para a delimitação da autonomia.
-
-\subsection{Separação de funções e registros de decisão}
-\label{rt-2-6-4}
-
-\citeonline{mosciatti2026} tratam de operações de segurança em dispositivos e aplicações com interfaces web. A arquitetura divide a tarefa em fases, e cada fase fica com um agente que tem memória, permissões e ferramentas isoladas. Os autores avaliam um protótipo de rotação de senhas em 12 aplicações e relatam sucesso em todas as execuções do experimento. Interessa à pesquisa a separação de deveres entre agentes e a existência de uma fase própria de validação. O trabalho executa operações de segurança, e não emite pareceres sobre repositórios.
-
-\citeonline{sowan2026} apresentam o AEGIS-Chain, uma arquitetura de apoio à decisão em cadeias de suprimentos. A arquitetura combina limites operacionais, níveis de escalonamento para pessoas e uma trilha de auditoria das decisões. A avaliação usa mil episódios de simulação. Os autores reconhecem que a utilidade dos registros para conformidade e responsabilização não foi validada empiricamente. Interessa à pesquisa a identificação das situações que pedem encaminhamento a uma pessoa.
-
-\subsection{Comparação e posicionamento da proposta}
-\label{rt-2-6-5}
+Quatro trabalhos tratam de regras e de registros. \citeonline{ait2025} e \citeonline{yan2025} representam políticas, normas e sanções de forma explícita, e ambos deixam a avaliação ou a experimentação para trabalhos futuros. O \textit{framework} de \citeonline{rousek2026} organiza a decomposição de tarefas, a vinculação das afirmações às evidências e o controle delimitado, e o autor declara que não o valida empiricamente. O AEGIS-Chain, de \citeonline{sowan2026}, combina limites operacionais, escalonamento a pessoas e uma trilha de auditoria das decisões, avaliados em mil episódios de simulação.
 
 A Tabela~\ref{quadro-trabalhos-relacionados} compara os trabalhos em quatro aspectos. As células descrevem o que cada texto relata.
 
@@ -265,6 +243,6 @@ Esse terceiro ponto delimita o que esta proposta examina. Ela reúne, na auditor
 \section{Resumo do Capítulo}
 \label{rt-resumo}
 
-A auditoria de repositório avalia uma versão identificada do código e de seus artefatos. Suas atividades produzem achados de qualidade, de segurança e de dependências, e as evidências permitem conferi-los. O contexto documental indica o que cada achado significa para a organização. A conclusão do especialista registra a interpretação de cada área, e o parecer reúne essas conclusões para apoiar a decisão do responsável humano. Esse apoio não constitui uma auditoria independente no sentido das normas.
+A auditoria de repositório avalia uma versão identificada do código e de seus artefatos. Suas atividades produzem achados de qualidade, de segurança e de dependências, e as evidências permitem conferi-los. O contexto documental indica o que cada achado significa para a organização. Cada agente especialista registra sua interpretação em uma conclusão, e o parecer reúne essas conclusões para apoiar a decisão do responsável humano. % V8: "conclusão do especialista" não era termo apresentado na Seção 2.1. Esse apoio não constitui uma auditoria independente no sentido das normas.
 
-Os sistemas multiagentes distribuem essas atividades entre especialistas, que trocam informações por comunicação P2P. Um modelo de linguagem apoia apenas a obtenção do contexto documental. O Agente Auditor, que exerce o controle semi-centralizado, reúne as conclusões dos especialistas e as consolida por regras derivadas de insumos de governança. Os registros de proveniência permitem explicar e revisar como cada parecer foi produzido. As tecnologias que materializam esses elementos são descritas no Capítulo~\ref{cap-suporte-tecnologico}, os procedimentos de coleta e análise, no Capítulo~\ref{cap-metodologia}, e os papéis, os fluxos e as regras da solução, no Capítulo~\ref{cap-proposta}.
+Os sistemas multiagentes distribuem essas atividades entre especialistas, que trocam informações por comunicação P2P. Um modelo de linguagem apoia apenas a obtenção do contexto documental. No controle semi-centralizado, o Agente Auditor reúne as conclusões dos especialistas e as consolida por regras derivadas de insumos de governança. % V8: ajustado à Seção 2.3.1. Os registros de proveniência permitem explicar e revisar como cada parecer foi produzido. As tecnologias que materializam esses elementos são descritas no Capítulo~\ref{cap-suporte-tecnologico}, os procedimentos de coleta e análise, no Capítulo~\ref{cap-metodologia}, e os papéis, os fluxos e as regras da solução, no Capítulo~\ref{cap-proposta}.
