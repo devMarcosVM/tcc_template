@@ -105,7 +105,7 @@ Essa distribuição pede uma arquitetura compatível com ela. Segundo \citeonlin
 A distribuição de funções entre agentes também é tratada na literatura como medida de segurança. \citeonline{mosciatti2026} adotam a separação de deveres como princípio de projeto. Nenhum agente reúne o contexto completo da tarefa, todas as credenciais e o acesso irrestrito às ferramentas. Trata-se de uma separação de responsabilidades dentro do sistema, que limita o efeito de um comportamento indevido. Ela não equivale à independência de auditoria discutida na seção~\ref{rt-2-1}.
 
 % V8: o Orquestrador entrou na frase, para ficar coerente com a Seção 2.4.2 e com o diagrama do Capítulo 5. Confirme com a orientadora.
-Nesta proposta, as atividades da auditoria são distribuídas entre agentes especialistas, que se consultam diretamente por P2P. O controle é semi-centralizado, pois o Agente Orquestrador organiza as tarefas e o Agente Auditor consolida as conclusões em um parecer. A arquitetura é detalhada no Capítulo~\ref{cap-proposta}.
+Nesta proposta, as atividades da auditoria são distribuídas entre agentes especialistas, que se consultam diretamente por P2P. Os achados de qualidade cabem ao agente de Qualidade, e os de segurança e de dependências cabem ao agente de Segurança, pois ambos tratam de vulnerabilidades, seja no código, seja nos componentes de terceiros. O controle é semi-centralizado, pois o Agente Orquestrador organiza as tarefas e o Agente Auditor consolida as conclusões em um parecer. A arquitetura é detalhada no Capítulo~\ref{cap-proposta}.
 
 \subsection{Modelos de agentes}
 \label{rt-2-3-2}
@@ -148,7 +148,7 @@ O termo P2P designa aqui a interação lógica entre os especialistas. O transpo
 
 A cooperação, a coordenação e a negociação fazem parte do contexto de interação dos sistemas multiagentes \cite{lazarin2025}. Aqui, a cooperação toma a forma de uma consulta. Um especialista pede uma informação que outro pode fornecer e examina sua pertinência antes de concluir a própria análise. A resposta pode sustentar a manutenção ou a revisão da conclusão.
 
-O significado dessas trocas depende do contexto. Ao estudar bots da Wikipédia, \citeonline{geiger2017} mostraram que interações antes classificadas como conflitos eram, em muitos casos, atividades rotineiras e colaborativas. Por isso, as perguntas, as respostas e as conclusões serão registradas, o que permite identificar quais informações foram compartilhadas e como entraram na análise.
+O significado dessas trocas depende do contexto. Ao estudar \textit{bots} da Wikipédia, \citeonline{geiger2017} mostraram que interações antes classificadas como conflitos eram, em muitos casos, atividades rotineiras e colaborativas. Por isso, as perguntas, as respostas e as conclusões serão registradas, o que permite identificar quais informações foram compartilhadas e como entraram na análise.
 
 O termo negociação não é usado para essas consultas. Ele fica reservado a mecanismos com propostas, critérios e procedimentos de resolução de divergências, que não fazem parte desta proposta.
 

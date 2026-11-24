@@ -1,31 +1,94 @@
+% Apêndices, versão 8 (23 nov. 2026), a partir da v7. Os três instrumentos são PROPOSTAS, ainda não validadas nem aplicadas.
+% V8: a configuração passou a incluir o modelo de linguagem, e o contexto documental foi simplificado, pois o Capítulo 5 ainda não define o nível de associação.
 \begin{apendicesenv}
-
-% Os apêndices são materiais elaborados pelo autor que complementam sua argumentação,
-% mas que não são essenciais para a compreensão do texto principal.
-% Exemplos: demonstrações matemáticas extensas, códigos-fonte, especificações
-% detalhadas, documentação técnica, etc.
 
 \partapendices
 
-\chapter{Primeiro Apêndice}
-\label{ap-primeiro}
-% Exemplo de figura em apêndice:
-% \begin{figure}[h]
-% \centering
-% \caption[Título curto para sumário]{Título completo da figura com detalhes.}
-% \includegraphics[keepaspectratio=true,scale=0.45]{figuras/nome_figura.eps}
-% \label{figura-nome}
-% \legend{Fonte: Autor.}
-% \end{figure}
+\chapter{Ficha de Registro de Auditoria (Proposta)}
+\label{ap-ficha}
 
-\chapter{Segundo Apêndice}
-\label{ap-segundo}
-% Exemplo: Documentação técnica detalhada
-% Exemplo: Códigos-fonte extensos
-% Exemplo: Demonstrações matemáticas complexas
+Esta ficha é uma proposta, a ser revista com a orientação antes da coleta. Ela será preenchida uma vez para cada execução. Os campos sem informação registram o motivo, que pode ser não coletado, indisponível, não se aplica ou falha.
 
-% Adicione mais capítulos de apêndices conforme necessário
-% Lembre-se: apêndices são documentos elaborados pelo autor
-% que complementam o trabalho mas não são essenciais ao texto principal
+\begin{table}[htbp]
+\centering
+\caption{Campos da ficha de registro de auditoria}
+\label{tab-ficha}
+\begingroup
+\footnotesize
+\SingleSpacing
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}X}
+\hline
+\textbf{Bloco} & \textbf{Campos} \\ \hline
+Identificação & Código da auditoria, código do repositório, \textit{commit}, critério de inclusão, data, código da execução e, se for reexecução, a execução de origem e o motivo \\ \hline
+Configuração & Versões da solução, das ferramentas, do modelo de linguagem e do arquivo de regras, com a soma de verificação do arquivo de regras \\ \hline
+Estado & Concluída, parcial ou com falha, com a descrição do ocorrido \\ \hline
+Achados & Número de achados de qualidade, de segurança e de dependências, com a referência ao relatório original de cada ferramenta \\ \hline
+Consultas P2P & Para cada consulta, o solicitante, o destinatário, o achado a que se refere, a situação da resposta e a conclusão antes e depois \\ \hline
+Contexto documental & Para cada resposta do agente de Requisitos e Documentação, o documento, o trecho utilizado e o resultado da verificação do trecho pelo autor \\ \hline
+Parecer & Categoria da recomendação, regras aplicadas e seu tipo, pontos de atenção, lacunas e questão encaminhada ao responsável humano \\ \hline
+Correspondência & Para cada afirmação do parecer verificada pelo autor, a evidência citada e o resultado da verificação \\ \hline
+Divulgação & Restrições de divulgação e local de guarda dos registros originais \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
+
+\chapter{Instrumento de Apreciação dos Pareceres (Proposta)}
+\label{ap-instrumento}
+
+Este instrumento é uma proposta e não foi validado. Ele será respondido uma vez por especialista para cada parecer, depois da leitura do material descrito na seção~\ref{met-apreciacao}.
+
+\section*{Parte 1. Perfil do participante}
+
+Esta parte é respondida uma única vez.
+
+\begin{enumerate}
+    \item Área de atuação atual.
+    \item Tempo de experiência em segurança de software, em anos.
+    \item Relação com a Empresa A (nenhuma, colaborador ou prestador de serviço).
+\end{enumerate}
+
+\section*{Parte 2. Critérios}
+
+Para cada afirmação, o participante indica seu grau de concordância em uma escala de cinco pontos, de discordo totalmente a concordo totalmente.
+
+\begin{enumerate}
+    \item Clareza. O parecer permite entender o que foi encontrado e o que está sendo recomendado.
+    \item Coerência. A recomendação e os pontos de atenção decorrem das evidências apresentadas.
+    \item Fundamentação. As regras e as fontes citadas sustentam o que o parecer afirma.
+\end{enumerate}
+
+\section*{Parte 3. Adequação da recomendação}
+
+\begin{enumerate}
+    \item Diante do material apresentado, a recomendação do parecer é adequada? As opções são sim, em parte, não e o material não é suficiente para julgar.
+    \item Justifique a resposta. Se respondeu em parte ou não, indique o que mudaria na recomendação.
+\end{enumerate}
+
+\section*{Parte 4. Comentários}
+
+\begin{enumerate}
+    \item Alguma informação fez falta para avaliar o parecer?
+    \item As consultas entre os agentes, mostradas no material, acrescentaram algo à sua leitura do achado?
+    \item Outros comentários.
+\end{enumerate}
+
+\chapter{Roteiro do Termo de Consentimento Livre e Esclarecido (Proposta)}
+\label{ap-tcle}
+
+% PENDENTE: este roteiro lista o conteúdo mínimo. A redação final do TCLE e a necessidade de submissão a comitê de ética devem ser definidas com a orientação, conforme as normas da universidade.
+Este roteiro é uma proposta do conteúdo do termo. A redação final e as exigências institucionais aplicáveis serão definidas com a orientação.
+
+\begin{enumerate}
+    \item Identificação da pesquisa, do pesquisador e dos orientadores, com os contatos.
+    \item Objetivo da participação, que é apreciar pareceres produzidos por um projeto piloto quanto à clareza, à coerência e à fundamentação.
+    \item O que será pedido ao participante, com a estimativa de tempo por parecer.
+    \item Caráter voluntário da participação e possibilidade de desistência a qualquer momento, sem prejuízo.
+    \item Registro das respostas sem identificação nominal e forma de guarda dos dados.
+    \item Confidencialidade do material de leitura, que pode conter informações de repositórios da Empresa A.
+    \item Uso dos dados, restrito à monografia e a publicações dela derivadas.
+    \item Espaço para a assinatura e para a data.
+\end{enumerate}
 
 \end{apendicesenv}

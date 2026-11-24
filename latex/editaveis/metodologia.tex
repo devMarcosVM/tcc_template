@@ -1,185 +1,434 @@
+% Capítulo 4, versão 8 (23 nov. 2026).
+% Base: revisão v7 (16 nov. 2026), atualizada com as decisões tomadas até 23 nov. 2026 (SPADE-LLM, Ollama e Qwen3.5 9B, Docker, análise de dependências no agente de Segurança, Trivy, fim do Bandit).
+% Regras desta versão. Nada é apresentado como implementado ou validado. O que foi feito (pesquisa bibliográfica, escolhas) fica no passado, e o que o projeto piloto fará fica no futuro.
+% Remissões com "seção" em minúscula, palavras em inglês em itálico e sem dois-pontos ligando orações.
+% "% PENDENTE" marca dado ou decisão que depende do autor ou da orientação. Não entregue sem resolver ou sem combinar com a orientadora.
+
 \chapter{Metodologia}
 \label{cap-metodologia}
 
-% Este capítulo deve descrever detalhadamente os métodos e procedimentos utilizados na pesquisa
-% Organize as seções de forma lógica, explicando cada etapa do trabalho
+Com foco nos procedimentos que conduzem a pesquisa, o capítulo começa apresentando a classificação da pesquisa (seção~\ref{met-classificacao}), cobrindo, dentre outros tópicos, a relação entre os objetivos específicos e os métodos adotados. Na sequência, há menção ao método do estudo exploratório (seção~\ref{met-exploratorio}), que orientou a pesquisa bibliográfica, e ao método da modelagem (seção~\ref{met-modelagem}). O método orientado a provas de conceito é abordado na seção~\ref{met-poc}, considerando os marcos previstos para o projeto piloto, e o método de desenvolvimento, na seção~\ref{met-desenvolvimento}. Há um olhar ainda para o método de análise de resultados (seção~\ref{met-analise}), planejado para a segunda etapa do trabalho, e para as atividades e os cronogramas das duas etapas (seção~\ref{met-cronogramas}). Por fim, a seção~\ref{met-resumo} resume o capítulo.
 
 \section{Classificação da Pesquisa}
-\label{mtd-classificacao-pesquisa}
+\label{met-classificacao}
 
-% Utilize a figura abaixo para ilustrar os tipos de classificação da pesquisa
-% \begin{figure}[h]
-% \centering
-% \caption[Classificação da Pesquisa Científica]{Tipos de classificação de pesquisa científica e as respectivas classificações deste trabalho.}
-% \includegraphics[keepaspectratio=true,scale=0.17]{figuras/research_types.eps}
-% \label{figura-tipos-pesquisa}
-% \legend{Fonte: \cite{inmetro2003}. Figura elaborada pelo autor.}
-% \end{figure}
+% V10 (23 nov. 2026): a classificação, a abordagem e a natureza passaram a citar o capítulo de Silveira e Córdova (2009), conferido nas páginas 31, 33 e 35 do livro organizado por Gerhardt e Silveira. Gil (2002) fica com os objetivos e os procedimentos, que é o que o trecho enviado pela orientadora sustenta.
+Segundo \citeonline{silveira2009}, uma pesquisa pode ser classificada quanto à abordagem, à natureza, aos objetivos e aos procedimentos. A Tabela~\ref{tab-classificacao} resume a classificação deste trabalho, e as subseções seguintes justificam cada item.
+
+\begin{table}[htbp]
+\centering
+\caption{Classificação da pesquisa}
+\label{tab-classificacao}
+\begingroup
+\footnotesize
+\SingleSpacing
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{0.85\textwidth}{>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}X}
+\hline
+\textbf{Aspecto} & \textbf{Classificação} \\ \hline
+Abordagem & Predominantemente qualitativa, com medidas quantitativas descritivas \\ \hline
+Objetivo & Exploratória e descritiva \\ \hline
+Natureza & Aplicada \\ \hline
+Procedimentos & Pesquisa bibliográfica, prova de conceito e estudo observacional e descritivo \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
 
 \subsection{Abordagem de Pesquisa}
-\label{mtd-abordagem-pesquisa}
-% Descreva e justifique a abordagem escolhida:
-% - Qualitativa
-% - Quantitativa
-% - Mista
+\label{met-abordagem}
+
+Segundo \citeonline{silveira2009}, a abordagem qualitativa não se preocupa com a representatividade numérica, e sim com o aprofundamento da compreensão de um grupo social ou de uma organização, tratando de aspectos da realidade que não podem ser quantificados. Na abordagem quantitativa, ao contrário, os resultados podem ser quantificados.
+
+Esta pesquisa é predominantemente qualitativa. A análise se apoiará na leitura dos pareceres e de seus registros e na percepção de especialistas em segurança sobre a clareza, a coerência e a fundamentação desses pareceres. Medidas quantitativas serão usadas de forma descritiva, quando ajudarem a evidenciar um aspecto. São exemplos o desempenho dos agentes, o número de interações entre eles e a taxa de acerto mencionada na seção~\ref{1-metodologia}, operacionalizada na seção~\ref{met-tratamento} como taxa de adequação percebida.
 
 \subsection{Objetivo de Pesquisa}
-\label{mtd-objetivo-pesquisa}
-% Classifique quanto aos objetivos:
-% - Exploratória
-% - Descritiva
-% - Explicativa
+\label{met-objetivo}
+
+Segundo \citeonline{gil2002}, a pesquisa exploratória busca maior familiaridade com um problema, para torná-lo mais explícito, enquanto a pesquisa descritiva descreve as características de uma população ou de um fenômeno, com técnicas padronizadas de coleta, como a observação sistemática.
+
+Esta pesquisa é exploratória e descritiva. É exploratória porque o portfólio da Empresa A, a segurança de software e os sistemas multiagentes são temas em estudo pelo autor, e a solução segue um paradigma ainda pouco aplicado a esse problema. É descritiva porque cada auditoria realizada pelo projeto piloto será documentada, com seus achados, suas interações e seu parecer.
 
 \subsection{Natureza de Pesquisa}
-\label{mtd-natureza-pesquisa}
-% Indique e justifique a natureza:
-% - Básica
-% - Aplicada
+\label{met-natureza}
+
+Segundo \citeonline{silveira2009}, a pesquisa aplicada gera conhecimentos para aplicação prática, dirigidos à solução de problemas específicos. Esta pesquisa é aplicada, pois a solução é proposta para apoiar a auditoria de repositórios do portfólio de automações de uma empresa real.
 
 \subsection{Procedimento de Pesquisa}
-\label{mtd-procedimento-pesquisa}
-% Descreva os procedimentos utilizados:
-% - Pesquisa Bibliográfica
-% - Estudo de Caso
-% - Pesquisa Experimental
-% - Outros
+\label{met-procedimento}
+
+A pesquisa adota três procedimentos. O primeiro é a pesquisa bibliográfica, que, segundo \citeonline{gil2002}, é desenvolvida com base em material já elaborado, constituído principalmente de livros e artigos científicos. Ela sustenta o Referencial Teórico (Capítulo~\ref{cap-referencial-teorico}) e é detalhada na seção~\ref{met-exploratorio}.
+
+O segundo procedimento é a prova de conceito. O projeto piloto não pretende entregar uma solução plena, implantada na empresa, e sim indicar um caminho de solução para o apoio à auditoria de repositórios. O roteiro adotado é detalhado na seção~\ref{met-poc}.
+
+O terceiro procedimento é um estudo observacional e descritivo. O autor aplicará a solução a versões identificadas de repositórios autorizados e registrará o que observar, sem modificar os repositórios e sem estimar efeitos causais. O planejamento considera, por adaptação ao domínio de software, as recomendações de \citeonline{morshed2009} e de \citeonline{zangirolami2018} para estudos observacionais. Considera também, por adaptação, as diretrizes de \citeonline{runeson2009} para a condução e o relato de estudos de caso em engenharia de software. O estudo é detalhado na seção~\ref{met-analise}.
+% PENDENTE (decisão com a orientadora): o desenho específico ainda está em aberto entre série de casos (Morshed et al.) e estudo transversal descritivo (Zangirolami-Raimundo et al.). "Observacional e descritivo" vale para os dois.
+
+\subsection{Objetivos Específicos e Métodos}
+\label{met-objetivos}
+
+A Tabela~\ref{tab-objetivos-metodos} relaciona cada objetivo específico, definido na seção~\ref{1-objetivos-especificos}, ao método que o atende e ao lugar da monografia em que o resultado é apresentado.
+
+\begin{table}[htbp]
+\centering
+\caption{Objetivos específicos, métodos e resultados}
+\label{tab-objetivos-metodos}
+\begingroup
+\footnotesize
+\SingleSpacing
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.4cm}}
+\hline
+\textbf{Objetivo específico} & \textbf{Método} & \textbf{Onde é apresentado} \\ \hline
+OE1, levantamento teórico e tecnológico & Pesquisa bibliográfica e consulta à documentação das ferramentas (seção~\ref{met-exploratorio}) & Capítulos~\ref{cap-referencial-teorico} e~\ref{cap-suporte-tecnologico} \\ \hline
+OE2, levantamento de trabalhos relacionados & Pesquisa bibliográfica com protocolo de busca e de seleção (seção~\ref{met-exploratorio}) & Seção~\ref{rt-2-6} \\ \hline
+OE3, modelagem dos agentes, do fluxo e da comunicação & Modelagem com diagramas UML (seção~\ref{met-modelagem}) & Capítulo~\ref{cap-proposta} \\ \hline
+OE4, implementação do projeto piloto & Provas de conceito em marcos, com Scrum Solo e Kanban (seções~\ref{met-poc} e~\ref{met-desenvolvimento}) & Capítulo~\ref{cap-proposta} e segunda etapa \\ \hline
+OE5, rastreabilidade das interações & Registro padronizado das mensagens, das evidências e das conclusões (seção~\ref{met-coleta}) & Capítulo~\ref{cap-proposta} e análise de resultados \\ \hline
+OE6, incorporação do Agente Auditor & Regras versionadas, derivadas de insumos de governança (seção~\ref{rt-2-5-1}), implementadas nos marcos da prova de conceito & Capítulo~\ref{cap-proposta} e segunda etapa \\ \hline
+OE7, análise dos resultados & Estudo observacional e descritivo, com apreciação por especialistas (seção~\ref{met-analise}) & Análise de resultados, na segunda etapa \\ \hline
+OE8, documentação dos achados & Redação da monografia e conservação dos registros e dos instrumentos & Monografia e apêndices \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
 
 \section{Método do Estudo Exploratório}
-\label{mtd-estudo-exploratorio}
-% Descreva como foi realizada a revisão bibliográfica
-% Utilize a tabela abaixo para documentar as strings de busca
-% \begin{table}[h]
-% 	\centering
-% 	\caption[\textit{Strings} de busca utilizadas na revisão bibliográfica]{\textit{Strings} de busca utilizadas na revisão bibliográfica e a quantidade resultante de artigos analisados para cada busca.}
-% 	\label{tabela-strings-busca}
-% 	\begin{tabular}{lll}
-% 		\hline
-% 		\multicolumn{1}{c}{\textbf{Base de Dados}} & \multicolumn{1}{c}{\textit{\textbf{String de Busca}}}                                                                                                                                                    & \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}l@{}}Nº de Artigos\\ Analisados\end{tabular}}} \\ \hline
-% 		Google Acadêmico   & \begin{tabular}[c]{@{}l@{}}data privacy\\ ``data engineering''\\ 2019-2024\end{tabular}    	& 20      \\ \hline
-% 		Google Acadêmico   & \begin{tabular}[c]{@{}l@{}}data privacy\\ ``data engineering''\\ 2023-2024\end{tabular}    	& 10      \\ \hline
-% 		Google Acadêmico   & \begin{tabular}[c]{@{}l@{}}software engineer data \\``data privacy'' 2019-2024\end{tabular}  & 30  \\ \hline
-% 		Google Acadêmico   & \begin{tabular}[c]{@{}l@{}}``data privacy'' \\software engineer data \\OR data lineage \\OR access control \\OR metadata management \\2019-2024\end{tabular}         & 20           \\ \hline
-% 		Google Acadêmico   & \begin{tabular}[c]{@{}l@{}}data privacy \\OR ``data engineering'' \\2019-2024\end{tabular} 																		  & 10    \\ \hline
-% 		Google Acadêmico   & \begin{tabular}[c]{@{}l@{}}4th industrial revolution \\technology impact \\2019-2024\end{tabular} 	  & 20    \\ \hline
-% 		Google Acadêmico   & \begin{tabular}[c]{@{}l@{}}self sovereign identity \\``data privacy''\\2019-2024\end{tabular} 	  & 10    \\ \hline
-% 	\end{tabular}
-% 	\legend{Fonte: Autor.}
-% \end{table}
+\label{met-exploratorio}
+
+% Seção mantida da v7, que foi escrita a partir da planilha "Levantamento Artigos TCC.xlsx" e das notas de 6 out. 2026. Os números são os da planilha.
+O estudo exploratório foi conduzido como uma pesquisa bibliográfica apoiada em um protocolo de busca e de seleção. Os registros da pesquisa estão em uma planilha de levantamento, com o protocolo, as expressões de busca, os registros importados das bases e uma triagem preliminar. Esta seção relata o que esses registros documentam e indica, em cada passo, o que ficou incompleto.
+
+Os registros avaliados foram importados em 11 de setembro de 2026 de três bases, que são a Web of Science, a IEEE Xplore e a Scopus. As expressões de busca combinaram três grupos de termos em inglês. O primeiro trata do modelo ou do propósito do sistema, o segundo trata de agentes, e o terceiro trata do domínio de aplicação. A expressão registrada na planilha para a Scopus e para a IEEE Xplore é apresentada a seguir.
+
+\begin{quote}
+\footnotesize\raggedright
+\texttt{("BDI" OR "belief-desire-intention" OR "peer-to-peer" OR "P2P" OR "decision support") AND ("software agent" OR "multi-agent" OR "multiagent" OR "agentic") AND ("governance" OR "auditing" OR "compliance" OR "security" OR "shadow AI" OR "citizen developer" OR "software quality")}
+\end{quote}
+
+% PENDENTE (registro incompleto, só o autor pode resolver): qual expressão e quais filtros geraram cada uma das três exportações de 11 set. 2026.
+Os registros apresentam uma limitação que precisa ser declarada. A aba de expressões de busca contabiliza 979 resultados em buscas feitas em quatro fontes, e a aba de registros importados contém 240 registros de três bases. A planilha não documenta qual busca, com quais filtros, deu origem a cada exportação. Por isso, os 979 resultados não são tratados aqui como o universo da triagem. A análise parte dos 240 registros importados, que foram os únicos avaliados um a um, segundo os critérios da Tabela~\ref{tab-criterios}.
+
+\begin{table}[htbp]
+\centering
+\caption{Critérios de seleção da pesquisa bibliográfica}
+\label{tab-criterios}
+\begingroup
+\footnotesize
+\SingleSpacing
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.35cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}X}
+\hline
+\textbf{Código} & \textbf{Tipo} & \textbf{Critério} \\ \hline
+IC1 & Inclusão & Trata de sistemas multiagentes, de comunicação entre agentes ou de auditoria e governança automatizada de software, com aplicação ao desenvolvimento de software ou a práticas DevSecOps \\ \hline
+IC2 & Inclusão & Apresenta avaliação experimental de desempenho ou de eficácia \\ \hline
+EC1 & Exclusão & Não trata de sistemas multiagentes nem de auditoria ou governança automatizada de repositórios \\ \hline
+EC2 & Exclusão & Aborda apenas decisão totalmente autônoma, sem supervisão ou validação humana \\ \hline
+EC3 & Exclusão & Não é revisado por pares nem corresponde a monografia, dissertação ou tese de programa reconhecido \\ \hline
+EC4 & Exclusão & Trata de domínio alheio ao desenvolvimento de software, sem contribuição conceitual reaproveitável \\ \hline
+EC5 & Exclusão & É duplicado ou versão preliminar de estudo com versão final publicada \\ \hline
+EC6 & Exclusão & Não tem texto completo disponível \\ \hline
+EC7 & Exclusão & Não está em inglês nem em português \\ \hline
+EC8 & Exclusão & Trata de ferramenta descontinuada, sem relevância histórica ou comparativa \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor, a partir do protocolo registrado na planilha de levantamento.}
+\end{table}
+
+% O autor confirmou, em 17 nov. 2026, que bastava ao registro cumprir um dos critérios de inclusão. PENDENTE: registrar essa regra na aba "Protocolo" da planilha.
+Os dois critérios de inclusão foram aplicados como alternativos, isto é, bastava ao registro cumprir um deles para ser mantido. A planilha registra, para cada registro mantido, o critério que motivou a inclusão. Dos 38 registros mantidos, 33 foram incluídos pelo critério IC1 e cinco pelo critério IC2. Assim, um estudo conceitual, sem avaliação experimental, pôde ser mantido pelo critério IC1. É o caso de dois dos trabalhos relacionados, o de \citeonline{rousek2026}, que declara não realizar validação empírica, e o de \citeonline{yan2025}, que deixa a experimentação para trabalhos futuros.
+
+A triagem considerou o título e o resumo de cada registro e foi feita por um único avaliador, o autor. A Tabela~\ref{tab-triagem} apresenta o resultado. Dos 240 registros, 202 foram excluídos, a maior parte por não tratar de sistemas multiagentes ou de auditoria de software (EC1) e por pertencer a domínio alheio ao desenvolvimento de software (EC4). Os 38 registros restantes foram mantidos.
+
+\begin{table}[htbp]
+\centering
+\caption{Resultado da triagem dos registros}
+\label{tab-triagem}
+\begingroup
+\footnotesize
+\SingleSpacing
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{0.85\textwidth}{>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{2.2cm}}
+\hline
+\textbf{Etapa} & \textbf{Registros} \\ \hline
+Registros importados da Web of Science & 92 \\ \hline
+Registros importados da IEEE Xplore & 85 \\ \hline
+Registros importados da Scopus & 63 \\ \hline
+\textbf{Total de registros avaliados} & \textbf{240} \\ \hline
+Excluídos por EC1 & 99 \\ \hline
+Excluídos por EC4 & 93 \\ \hline
+Excluídos por EC2 & 3 \\ \hline
+Excluídos por EC3 & 3 \\ \hline
+Excluídos por EC7 & 3 \\ \hline
+Excluídos por EC6 & 1 \\ \hline
+\textbf{Total de excluídos} & \textbf{202} \\ \hline
+\textbf{Mantidos para leitura} & \textbf{38} \\ \hline
+Lidos na íntegra e discutidos como trabalhos relacionados & 9 \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor, a partir da planilha de levantamento.}
+\end{table}
+
+O caminho entre os 38 registros mantidos e os trabalhos relacionados teve duas etapas. Na primeira, os 38 registros foram classificados pelo título e pelo resumo quanto à utilidade para a pesquisa, em categorias como prioridade de leitura, fundamentação, complementar e reserva. Na segunda, os textos completos dos registros mais próximos da proposta foram lidos e fichados, com atenção à arquitetura, à avaliação e às limitações declaradas. Nove trabalhos resultaram dessa leitura e são discutidos na seção~\ref{rt-2-6}. Cinco vieram da categoria de prioridade de leitura, dois da categoria de fundamentação, um da categoria complementar e um da categoria de reserva. Os demais registros mantidos permanecem como literatura de apoio.
+
+% PENDENTE: na planilha, os 38 registros ainda estão com status "Pendente". Registrar o status final de cada um e o motivo de os outros 29 não terem sido usados.
+Essa priorização tem um limite. A planilha ainda registra os 38 trabalhos com a situação pendente, e o motivo de cada um dos outros 29 não ter sido priorizado está descrito apenas em notas de trabalho. A seleção dos nove é, portanto, uma escolha dirigida pelo autor, orientada pela proximidade com a proposta, e não o resultado de uma etapa formal de avaliação de qualidade.
+
+Parte das fontes do trabalho não veio do protocolo. As definições e as atividades da auditoria se apoiam em normas e publicações técnicas, como as da ISO, do IEEE, do NIST e da OWASP. Outras fontes foram indicadas pela orientação ou localizadas em buscas dirigidas, como as que tratam de DevSecOps e de redes P2P. Essas fontes complementares não passaram pelos critérios da Tabela~\ref{tab-criterios} e não integram a contagem da Tabela~\ref{tab-triagem}. Não há registro de aplicação da técnica de \textit{snowballing}, e ela não é declarada como procedimento deste estudo. A documentação oficial das ferramentas fundamenta o Capítulo~\ref{cap-suporte-tecnologico} e também não integra a seleção de estudos.
 
 \section{Método da Modelagem}
-\label{mtd-modelagem}
+\label{met-modelagem}
 
-% \begin{figure}[h]
-% 	\centering
-% 	\caption[Diagrama BPMN da Modelagem de um SIG]{Diagrama BPMN da Modelagem de um SIG para um atributo de qualidade.}
-% 	\includegraphics[keepaspectratio=true,scale=0.30]{figuras/modelagem_sig.eps}
-% 	\label{figura-modelagem-sig}
-% 	\legend{Fonte: Autor.}
-% \end{figure}
+% V8: três diagramas. O de atividades entrou por decisão do autor (23 nov. 2026), elaborado no draw.io.
+A modelagem da solução utiliza a UML, linguagem gráfica destinada a visualizar, especificar, construir e documentar sistemas \cite{omgUml}. Foram adotados três diagramas. O diagrama de componentes representa os agentes, as ferramentas e os artefatos, com suas relações. O diagrama de atividades representa o fluxo de uma auditoria, da solicitação ao parecer. O diagrama de sequência representa a ordem das mensagens trocadas entre os agentes nesse fluxo. As ferramentas de modelagem são descritas na seção~\ref{st-modelagem}.
+
+A modelagem segue quatro atividades. Na primeira, as atividades da auditoria, apresentadas na seção~\ref{rt-2-1}, são atribuídas a agentes especialistas. Na segunda, elabora-se o diagrama de componentes, com os agentes, as ferramentas que cada um consulta e os artefatos que produz. Na terceira, elaboram-se os diagramas de atividades e de sequência de uma auditoria, com as consultas P2P entre os especialistas e a consolidação pelo Auditor. Na quarta, os diagramas são revistos com a orientação e atualizados a cada marco da prova de conceito. Os diagramas representam a arquitetura alvo e são apresentados no Capítulo~\ref{cap-proposta}.
 
 \section{Método Orientado a Provas de Conceito}
-\label{mtd-provas-conceito}
+\label{met-poc}
 
+% PENDENTE: citar a fonte do roteiro de prova de conceito adotado pela orientação (orientações da Profa. Milene, ou a referência que ela indicar). A definição de prova de conceito abaixo também precisa de fonte.
+Uma prova de conceito (PoC) é uma implementação delimitada, construída para verificar se uma ideia de solução é viável antes de seu desenvolvimento completo. Neste trabalho, a PoC segue o roteiro de cinco etapas adotado pela orientação, apresentado a seguir.
+
+\begin{itemize}
+    \item \textbf{Problema e Objetivo.} Delimita-se o problema que a PoC investiga e o objetivo que ela deve cumprir;
+    \item \textbf{Solução ``Ótima'' e Potencial.} Descreve-se a solução completa desejada e a parte dela que a PoC consegue demonstrar;
+    \item \textbf{Projeto da PoC.} Definem-se o escopo, as ferramentas, os dados de entrada e os critérios de verificação;
+    \item \textbf{Construção da PoC.} Implementa-se o recorte projetado, com registro das decisões e das versões utilizadas, e
+    \item \textbf{Avaliação de Resultados e Aprendizados.} Verifica-se o funcionamento em relação aos critérios definidos e registram-se os aprendizados e os limites observados.
+\end{itemize}
+
+A PoC deste trabalho será construída de forma incremental, em marcos. Cada marco acrescenta uma capacidade ao anterior e passa pelas cinco etapas do roteiro. A Tabela~\ref{tab-marcos} apresenta os marcos previstos, que seguem a ordem em que as ferramentas foram apresentadas no Capítulo~\ref{cap-suporte-tecnologico}. Os marcos M0 a M3 usarão material sintético, preparado pelo autor, e só o marco M4 será aplicado a repositórios da Empresa A.
+
+% V8: marcos refeitos. Nenhum marco é apresentado como concluído. PENDENTE: atualizar a coluna "Situação" na data da entrega e ajustar a ordem ao que for combinado com a orientação.
+\begin{table}[htbp]
+\centering
+\caption{Marcos da prova de conceito}
+\label{tab-marcos}
+\begingroup
+\footnotesize
+\SingleSpacing
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}}
+\hline
+\textbf{Marco} & \textbf{Capacidade acrescentada} & \textbf{Situação} \\ \hline
+M0 & Ambiente em contêineres com o Prosody e o SonarQube. Quatro agentes SPADE (Orquestrador, Qualidade, Segurança e Auditor), evidências de qualidade do SonarQube, uma consulta P2P do agente de Segurança ao de Qualidade e uma regra do Auditor em arquivo YAML & Em andamento \\ \hline
+M1 & Evidências de análise estática de segurança com o Semgrep, para Python, TypeScript, JavaScript e PHP & Planejado \\ \hline
+M2 & Agente de Requisitos e Documentação, com o SPADE-LLM e o modelo de linguagem executado pelo Ollama, e consultas P2P de contexto documental & Planejado \\ \hline
+M3 & Análise de dependências no agente de Segurança, com o pip-audit, o npm audit, o Composer audit e o Trivy & Planejado \\ \hline
+M4 & Aplicação a repositórios autorizados da Empresa A & Planejado \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
+% CONFIRMAR: a situação "Em andamento" do M0 é uma suposição. Troque por "Planejado" se a construção ainda não começou.
+
+No marco M2, a etapa de Projeto da PoC incluirá a verificação do modelo de linguagem selecionado na seção~\ref{st-ollama}. O Qwen3.5 9B e a alternativa Gemma 4 E4B serão executados sobre os mesmos documentos, com o mesmo esquema de resposta e com temperatura zero. Serão comparados a proporção de respostas que seguem o esquema, a correspondência dos campos preenchidos com a leitura do autor, o tempo por documento e a memória de vídeo utilizada. O modelo que atender melhor a esses critérios será mantido, e a comparação será registrada como aprendizado do marco.
 
 \section{Método de Desenvolvimento}
-\label{mtd-desenvolvimento}
-% Detalhe as etapas do desenvolvimento:
-% - Ferramentas utilizadas
-% - Processos seguidos
-% - Técnicas aplicadas
+\label{met-desenvolvimento}
+
+O desenvolvimento combina dois métodos ágeis, o Scrum Solo e o Kanban. Segundo \citeonline{pagotto2016}, o Scrum Solo é uma adaptação do Scrum para o desenvolvimento individual de software, organizada em atividades de definição de requisitos, de \textit{sprint}, de implantação e de gerenciamento do projeto. O método é adequado a este trabalho porque a implementação é conduzida por um único desenvolvedor, com acompanhamento da orientação.
+
+Segundo \citeonline{boeg2010}, o Kanban torna o trabalho visível em um quadro, no qual cada coluna representa um estágio do fluxo, e limita o número de itens em andamento em cada estágio, de modo que um item novo só é iniciado quando há capacidade disponível.
+
+Neste trabalho, os itens de trabalho de cada marco da PoC formarão uma lista ordenada de pendências. O desenvolvimento ocorrerá em \textit{sprints} curtas, e cada uma terminará com um incremento que possa ser executado e verificado. As reuniões de orientação cumprirão o papel de revisão do incremento. Um quadro Kanban, com as colunas A Fazer, Em Andamento, Em Revisão e Concluído, acompanhará os itens.
+% PENDENTE: informar a duração da sprint, a ferramenta do quadro Kanban (Trello, GitHub Projects) e o limite de itens em andamento. Se usar uma ferramenta de quadro, incluí-la no Capítulo 3.
+
+Duas práticas apoiam a rastreabilidade do próprio desenvolvimento. O código, as regras do Auditor e os arquivos de configuração serão versionados com o Git, e cada incremento será associado a um \textit{commit}. Os serviços serão executados em contêineres definidos com o Docker Compose (seção~\ref{st-docker}), de modo que as versões das ferramentas fiquem registradas na configuração e o ambiente possa ser reproduzido em outra máquina.
 
 \section{Método de Análise de Resultados}
-\label{mtd-analise-resultados}
-% Explique como os resultados serão:
-% - Coletados
-% - Analisados
-% - Validados
+\label{met-analise}
+
+% V9 (23 nov. 2026): seção reduzida de cerca de 2.200 para cerca de 750 palavras, na proporção dos TCCs de Adne e Gabriel e de André e Gabriel. O detalhamento anterior (reexecuções, desfechos dos julgamentos e análise dos comentários) foi guardado em TCC-fonte/revisao-v17 para a segunda etapa.
+A análise de resultados examinará o funcionamento do projeto piloto por meio do estudo observacional e descritivo indicado na seção~\ref{met-procedimento}, e está planejada para a segunda etapa do trabalho. A unidade de análise é a auditoria, isto é, o exame de uma versão identificada de um repositório, correspondente a um \textit{commit}, com uma configuração identificada das ferramentas, das regras e do modelo de linguagem. Se a solução for executada mais de uma vez sobre a mesma auditoria, apenas a primeira execução concluída entrará nas contagens, e as demais serão relatadas à parte.
+
+\subsection{Seleção dos Repositórios}
+\label{met-selecao}
+
+Segundo \citeonline{morshed2009}, em estudos descritivos de um conjunto de casos, a população precisa ser definível, e o procedimento, reproduzível. Por isso, os critérios de seleção serão definidos antes da coleta. O repositório deverá ter uso autorizado pela Empresa A e conter código em linguagem coberta pelas ferramentas, isto é, Python, TypeScript, JavaScript ou PHP. A existência de documentação não será critério de seleção, pois exigi-la deixaria de fora justamente as automações de origem menos formal, descritas na seção~\ref{rt-2-2}. Nesses casos, a ausência do contexto documental será registrada no parecer como lacuna.
+% PENDENTE: [INSERIR NÚMERO DE REPOSITÓRIOS E PERÍODO DA COLETA]. Depende da autorização da Empresa A.
+
+\subsection{Coleta dos Registros}
+\label{met-coleta}
+
+Segundo \citeonline{zangirolami2018}, em estudos observacionais, os fenômenos são observados de maneira sistemática e padronizada, sem intervenção do pesquisador. Assim, todas as auditorias usarão as mesmas versões das ferramentas, das regras, do modelo de linguagem e da solução, e qualquer mudança será registrada. Para cada execução, serão conservados a identificação do repositório e do \textit{commit}, os achados com o relatório original de cada ferramenta, as consultas P2P com a conclusão do especialista antes e depois da consulta, o contexto documental utilizado e o parecer, com a regra que originou cada item. A ficha de registro das auditorias é apresentada no Apêndice~\ref{ap-ficha}, como proposta.
+
+\subsection{Apreciação por Especialistas}
+\label{met-apreciacao}
+
+Os pareceres serão apreciados por especialistas em segurança de software atuantes no mercado, como previsto na seção~\ref{1-metodologia}. A participação será voluntária e ocorrerá mediante Termo de Consentimento Livre e Esclarecido (TCLE), cujo roteiro é apresentado no Apêndice~\ref{ap-tcle}. Cada especialista receberá o parecer acompanhado das evidências citadas, das consultas P2P relacionadas, dos trechos documentais e das regras aplicadas. Ele não repetirá a auditoria, e sim julgará se o parecer é claro, se decorre das evidências e se está apoiado nas fontes citadas.
+% PENDENTE: [INSERIR NÚMERO E PERFIL DOS ESPECIALISTAS]. Decidir com a orientação.
+
+O instrumento de apreciação, apresentado no Apêndice~\ref{ap-instrumento} como proposta, reúne três partes. Na primeira, o especialista indica seu grau de concordância com afirmações sobre a clareza, a coerência e a fundamentação do parecer, em uma escala de cinco pontos. Na segunda, ele indica se a recomendação é adequada às evidências, com as opções sim, em parte e não, ou declara que o material não é suficiente para julgar. Na terceira, um campo aberto recebe comentários, que serão agrupados por tema a partir dos três critérios do instrumento.
+% PENDENTE: o instrumento não foi validado. Antes de aplicá-lo, testar com um parecer do cenário sintético.
+
+\subsection{Medidas e Tratamento dos Dados}
+\label{met-tratamento}
+
+Segundo \citeonline{morshed2009}, a análise de conjuntos de casos se apoia, em geral, em estatística descritiva básica. Assim, os dados serão tratados de forma descritiva, com contagens acompanhadas de proporções e com tempos resumidos pela mediana, pelo mínimo e pelo máximo. A Tabela~\ref{tab-medidas} apresenta as medidas previstas.
+
+\begin{table}[htbp]
+\centering
+\caption{Medidas descritivas previstas}
+\label{tab-medidas}
+\begingroup
+\footnotesize
+\SingleSpacing
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.2cm}}
+\hline
+\textbf{Aspecto} & \textbf{Medida} & \textbf{Fonte do dado} \\ \hline
+Execuções & Execuções concluídas, parciais e com falha, e duração de cada etapa & Registros de execução \\ \hline
+Achados & Achados de qualidade, de segurança e de dependências por auditoria & Relatórios das ferramentas \\ \hline
+Consultas P2P & Consultas respondidas e conclusões mantidas ou revisadas depois da consulta & Registro das mensagens \\ \hline
+Contexto documental & Respostas com trecho identificado, com informação ausente e com informação conflitante & Registro do agente de Requisitos e Documentação \\ \hline
+Parecer & Pareceres por categoria de recomendação e afirmações que correspondem à evidência citada & Pareceres e evidências \\ \hline
+Apreciação & Respostas sobre clareza, coerência e fundamentação, e julgamentos sobre a adequação da recomendação & Instrumento de apreciação \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
+
+A taxa de acerto mencionada na seção~\ref{1-metodologia} será operacionalizada como taxa de adequação percebida, isto é, a proporção de julgamentos sim entre os julgamentos sim, em parte e não. O nome reflete o que a medida alcança, pois o especialista julgará a recomendação diante do material apresentado, e não diante de um gabarito sobre as vulnerabilidades de cada repositório. Por fim, a classificação de cada achado será confrontada com a referência indicada pela ferramenta, como a CWE e o OWASP Top 10 \cite{cweAbout,owaspTop10}, e as regras do Agente Auditor, com a política, a lei ou a norma que lhes deu origem, como a LGPD \cite{lgpd2018}.
+% PENDENTE (decisão com a orientação): manter "taxa de acerto" na introdução ou trocar pelo termo "adequação percebida".
+
+\subsection{Limitações do Estudo}
+\label{met-limitacoes}
+
+O estudo tem limitações que condicionam a leitura dos resultados. Os repositórios pertencem a uma única organização e serão poucos, o que impede generalizar os resultados. O autor desenvolve a solução e conduz as auditorias, o que pode favorecer a solução, e por isso os critérios serão definidos antes da coleta e o julgamento dos pareceres caberá a especialistas externos ao desenvolvimento. Os marcos iniciais usarão material sintético, cujos resultados não serão relatados como resultados da Empresa A. A edição comunitária do Semgrep pode deixar de detectar vulnerabilidades (seção~\ref{st-semgrep}), e as respostas do modelo de linguagem podem variar entre execuções. Por fim, a concordância dos especialistas indica que um parecer é claro e fundamentado, e não que o repositório esteja livre de problemas.
 
 \section{Cronogramas de Atividades}
-\label{mtd-cronograma}
+\label{met-cronogramas}
 
-Esta seção descreve o fluxo de atividades e subprocessos para a realização da primeira e da segunda etapas do trabalho, bem como os cronogramas de execução associados.
+Esta seção descreve as atividades da primeira e da segunda etapas do trabalho e os cronogramas associados.
+% PENDENTE: os TCCs aprovados pela orientação trazem um fluxo de cada etapa (ver o TCC de Adne e Gabriel). Se o autor elaborar esses fluxos no draw.io, inserir as figuras nas subseções abaixo.
 
-\subsection{Atividades e Subprocessos da Primeira Etapa}
+\subsection{Atividades da Primeira Etapa}
+\label{met-etapa1}
 \label{met-atividades-primeira-etapa}
-% Use o modelo de lista de atividades comentado como exemplo
-% Inclua o cronograma e diagrama BPMN conforme modelos comentados
-% \begin{enumerate}
-% 	\item \textbf{[Nome da Atividade 1]}: [Descrição da atividade];
-% 	\begin{itemize}
-% 		\item \textit{Status}: [Status da atividade], e
-% 		\item \textit{Resultado}: [Resultado obtido].
-% 	\end{itemize}
-	
-% 	\item \textbf{[Nome da Atividade 2]}: [Descrição da atividade];
-% 	\begin{itemize}
-% 		\item \textit{Status}: [Status da atividade], e
-% 		\item \textit{Resultado}: [Resultado obtido].
-% 	\end{itemize}
-% 	% Adicione mais atividades conforme necessário
-% \end{enumerate}
+% O Capítulo 6 do modelo usa o rótulo acima.
 
-% A Tabela \ref{tabela-cronograma-primeira-etapa} apresenta o cronograma mensal de finalização das atividades. A Figura \ref{figura-primeira-etapa} ilustra o diagrama BPMN do fluxo de realização.
+A Tabela~\ref{tab-atividades1} apresenta as atividades da primeira etapa, com a situação de cada uma e o insumo gerado.
+% PENDENTE: conferir a situação de cada atividade na data da entrega.
 
-% \begin{table}[h]
-% 	\centering
-% 	\caption[Cronograma de execução da Primeira Etapa]{Cronograma de finalização de atividades.}
-% 	\label{tabela-cronograma-primeira-etapa}
-% 	\begin{tabular}{r|ccccc}
-% 		\hline
-% 		\multicolumn{1}{c}{\textbf{ATIVIDADE}} & \textbf{MÊS 1} & \textbf{MÊS 2} & \textbf{MÊS 3} & \textbf{MÊS 4} & \textbf{MÊS 5} \\ \hline
-% 		[Atividade 1] & X & & & & \\ \hline
-% 		[Atividade 2] & & X & & & \\ \hline
-% 		% Adicione mais linhas conforme necessário
-% 	\end{tabular}
-% 	\legend{Fonte: Autor.}
-% \end{table}
+\begin{table}[htbp]
+\centering
+\caption{Atividades da primeira etapa do trabalho}
+\label{tab-atividades1}
+\begingroup
+\footnotesize
+\SingleSpacing
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.8cm}}
+\hline
+\textbf{Atividade} & \textbf{Descrição} & \textbf{Situação} & \textbf{Insumo gerado} \\ \hline
+Definir o tema & Escolha do tema e do recorte, com o apoio da orientação & Concluída & Título e recorte do trabalho \\ \hline
+Realizar a pesquisa bibliográfica & Protocolo de busca e de seleção (seção~\ref{met-exploratorio}) & Concluída & Planilha de levantamento e base de referências \\ \hline
+Contextualizar o trabalho & Contextualização, questão de pesquisa, justificativa e objetivos & Em revisão & Capítulo~1 \\ \hline
+Escrever o referencial teórico & Conceitos e trabalhos relacionados & Em revisão & Capítulo~\ref{cap-referencial-teorico} \\ \hline
+Elaborar o suporte tecnológico & Seleção e descrição das ferramentas & Em revisão & Capítulo~\ref{cap-suporte-tecnologico} \\ \hline
+Especificar a metodologia & Definição dos métodos e dos cronogramas & Em revisão & Capítulo~\ref{cap-metodologia} \\ \hline
+Elaborar a proposta & Detalhamento da solução e dos diagramas & Em andamento & Capítulo~\ref{cap-proposta} \\ \hline
+Iniciar a prova de conceito & Marco M0 (seção~\ref{met-poc}) & Em andamento & Primeiro incremento do projeto piloto \\ \hline
+Registrar o estado do trabalho & Síntese do estágio alcançado, das limitações e dos próximos passos & A realizar & Capítulo~\ref{cap-status-atual} \\ \hline
+Apresentar a proposta à banca & Revisão geral da monografia e apresentação & A realizar & Monografia da primeira etapa \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
 
-% \begin{figure}[h]
-% 	\centering
-% 	\caption[Diagrama BPMN da Primeira Etapa]{Diagrama BPMN do processo.}
-% 	\includegraphics[keepaspectratio=true,scale=0.3]{figuras/diagrama_processo.eps}
-% 	\label{figura-primeira-etapa}
-% 	\legend{Fonte: Autor.}
-% \end{figure}
+A Tabela~\ref{tab-cronograma1} apresenta o cronograma da primeira etapa, no segundo semestre de 2026.
 
-\subsection{Atividades e Subprocessos da Segunda Etapa}
-\label{met-atividades-segunda-etapa}
+\begin{table}[htbp]
+\centering
+\caption{Cronograma da primeira etapa do trabalho (2026)}
+\label{tab-cronograma1}
+\begingroup
+\footnotesize
+\SingleSpacing
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X*{5}{>{\centering\arraybackslash}p{1.0cm}}}
+\hline
+\textbf{Atividade} & \textbf{Ago} & \textbf{Set} & \textbf{Out} & \textbf{Nov} & \textbf{Dez} \\ \hline
+Definir o tema & X & & & & \\ \hline
+Realizar a pesquisa bibliográfica & X & X & X & & \\ \hline
+Contextualizar o trabalho & X & & & X & \\ \hline
+Escrever o referencial teórico & & X & X & X & \\ \hline
+Elaborar o suporte tecnológico & & X & X & X & \\ \hline
+Especificar a metodologia & & & X & X & \\ \hline
+Elaborar a proposta & & & X & X & X \\ \hline
+Iniciar a prova de conceito & & & X & X & X \\ \hline
+Registrar o estado do trabalho & & & & X & X \\ \hline
+Apresentar a proposta à banca & & & & & X \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
+% PENDENTE: conferir os meses com o que ocorreu de fato. A tabela parte da v7 e das datas dos arquivos do autor.
 
-% \begin{enumerate}
-% 	\item \textbf{[Nome da Atividade 1]}: [Descrição da atividade];
-% 	\begin{itemize}
-% 		\item \textit{Status}: [Status da atividade], e
-% 		\item \textit{Resultado}: [Resultado obtido].
-% 	\end{itemize}
-% 	% Adicione mais atividades conforme necessário
-% \end{enumerate}
+\subsection{Atividades da Segunda Etapa}
+\label{met-etapa2}
 
-% A Tabela \ref{tabela-cronograma-segunda-etapa} apresenta o cronograma mensal. A Figura \ref{figura-segunda-etapa} ilustra o diagrama BPMN do fluxo.
+A Tabela~\ref{tab-atividades2} apresenta as atividades da segunda etapa, todas a realizar, com o insumo previsto para cada uma.
 
-% \begin{table}[h]
-% 	\centering
-% 	\caption[Cronograma de execução da Segunda Etapa]{Cronograma para finalização de atividades.}
-% 	\label{tabela-cronograma-segunda-etapa}
-% 	\begin{tabular}{r|ccccc}
-% 		\hline
-% 		\multicolumn{1}{c}{\textbf{ATIVIDADE}} & \textbf{MÊS 1} & \textbf{MÊS 2} & \textbf{MÊS 3} & \textbf{MÊS 4} & \textbf{MÊS 5} \\ \hline
-% 		[Atividade 1] & X & & & & \\ \hline
-% 		[Atividade 2] & & X & & & \\ \hline
-% 		% Adicione mais linhas conforme necessário
-% 	\end{tabular}
-% 	\legend{Fonte: Autor.}
-% \end{table}
+\begin{table}[htbp]
+\centering
+\caption{Atividades da segunda etapa do trabalho}
+\label{tab-atividades2}
+\begingroup
+\footnotesize
+\SingleSpacing
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.4cm}}
+\hline
+\textbf{Atividade} & \textbf{Descrição} & \textbf{Insumo previsto} \\ \hline
+Corrigir os apontamentos da banca & Ajustes a partir das sugestões recebidas na primeira etapa & Monografia corrigida \\ \hline
+Desenvolver a solução & Marcos M1 a M3, conforme as seções~\ref{met-poc} e~\ref{met-desenvolvimento} & Projeto piloto \\ \hline
+Atualizar os capítulos 1 a 5 & Revisão do texto conforme a evolução do trabalho & Capítulos atualizados \\ \hline
+Realizar as auditorias & Marco M4, em repositórios autorizados, conforme a seção~\ref{met-analise} & Registros das auditorias e pareceres \\ \hline
+Conduzir a apreciação & Aplicação do instrumento de apreciação, mediante TCLE & Respostas dos especialistas \\ \hline
+Analisar os resultados & Tratamento dos dados e redação da análise & Capítulo de análise de resultados \\ \hline
+Redigir a conclusão & Fechamento e revisão da monografia & Monografia final \\ \hline
+Apresentar o trabalho final & Defesa perante a banca examinadora & Apresentação final \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
 
-% \begin{figure}[h]
-% 	\centering
-% 	\caption[Diagrama BPMN da Segunda Etapa]{Diagrama BPMN do processo.}
-% 	\includegraphics[keepaspectratio=true,scale=0.25]{figuras/diagrama_processo_2.eps}
-% 	\label{figura-segunda-etapa}
-% 	\legend{Fonte: Autor.}
-% \end{figure}
+A Tabela~\ref{tab-cronograma2} apresenta o cronograma da segunda etapa, em meses contados a partir do início do semestre letivo.
+
+\begin{table}[htbp]
+\centering
+\caption{Cronograma da segunda etapa do trabalho}
+\label{tab-cronograma2}
+\begingroup
+\footnotesize
+\SingleSpacing
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X*{4}{>{\centering\arraybackslash}p{1.2cm}}}
+\hline
+\textbf{Atividade} & \textbf{Mês 1} & \textbf{Mês 2} & \textbf{Mês 3} & \textbf{Mês 4} \\ \hline
+Corrigir os apontamentos da banca & X & & & \\ \hline
+Desenvolver a solução & X & X & & \\ \hline
+Atualizar os capítulos 1 a 5 & X & X & & \\ \hline
+Realizar as auditorias & & X & X & \\ \hline
+Conduzir a apreciação & & & X & \\ \hline
+Analisar os resultados & & & X & X \\ \hline
+Redigir a conclusão & & & X & X \\ \hline
+Apresentar o trabalho final & & & & X \\ \hline
+\end{tabularx}
+\endgroup
+\legend{Fonte: elaboração do autor.}
+\end{table}
+% PENDENTE: trocar "Mês 1" a "Mês 4" pelos meses do semestre do TCC 2.
 
 \section{Resumo do Capítulo}
-\label{mtd-resumo}
-% Sintetize os principais aspectos da metodologia
-% Reforce a adequação dos métodos aos objetivos do trabalho
+\label{met-resumo}
+
+Neste capítulo, foi apresentada a metodologia do trabalho. A pesquisa é aplicada, exploratória e descritiva, com abordagem predominantemente qualitativa, e se apoia na pesquisa bibliográfica, na prova de conceito e em um estudo observacional e descritivo. A modelagem usará diagramas UML, e a prova de conceito avançará por marcos, com desenvolvimento orientado por Scrum Solo e Kanban. Na segunda etapa, as auditorias serão registradas de forma padronizada e os pareceres serão apreciados por especialistas em segurança. Os cronogramas distribuem as atividades nas duas etapas, e o Capítulo~\ref{cap-proposta} apresentará a solução à qual esses métodos se aplicam.
