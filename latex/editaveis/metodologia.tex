@@ -199,7 +199,7 @@ Uma prova de conceito (PoC) é uma implementação delimitada, construída para 
     \item \textbf{Avaliação de Resultados e Aprendizados.} Verifica-se o funcionamento em relação aos critérios definidos e registram-se os aprendizados e os limites observados.
 \end{itemize}
 
-A PoC deste trabalho será construída de forma incremental, em marcos. Cada marco acrescenta uma capacidade ao anterior e passa pelas cinco etapas do roteiro. A Tabela~\ref{tab-marcos} apresenta os marcos previstos, que seguem a ordem em que as ferramentas foram apresentadas no Capítulo~\ref{cap-suporte-tecnologico}. Os marcos M0 a M3 usarão material sintético, preparado pelo autor, e só o marco M4 será aplicado a repositórios da Empresa A.
+A PoC deste trabalho será construída de forma incremental, em marcos. Cada marco acrescenta uma capacidade ao anterior e passa pelas cinco etapas do roteiro. A Tabela~\ref{tab-marcos} apresenta os marcos previstos, que seguem a ordem em que as ferramentas foram apresentadas no Capítulo~\ref{cap-suporte-tecnologico}. Os marcos M0 a M4 usarão material sintético, preparado pelo autor, e só o marco M5 será aplicado a repositórios da Empresa A.
 
 % V8: marcos refeitos. Nenhum marco é apresentado como concluído. PENDENTE: atualizar a coluna "Situação" na data da entrega e ajustar a ordem ao que for combinado com a orientação.
 \begin{table}[htbp]
@@ -218,7 +218,8 @@ M0 & Ambiente em contêineres com o Prosody e o SonarQube. Quatro agentes SPADE 
 M1 & Evidências de análise estática de segurança com o Semgrep, para Python, TypeScript, JavaScript e PHP & Planejado \\ \hline
 M2 & Agente de Requisitos e Documentação, com o SPADE-LLM e o modelo de linguagem executado pelo Ollama, e consultas P2P de contexto documental & Planejado \\ \hline
 M3 & Análise de dependências no agente de Segurança, com o pip-audit, o npm audit, o Composer audit e o Trivy & Planejado \\ \hline
-M4 & Aplicação a repositórios autorizados da Empresa A & Planejado \\ \hline
+M4 & Tela em Next.js para solicitar auditorias e apresentar os pareceres, com as rotas \textit{web} do Orquestrador e o acesso aos repositórios privados por credencial somente de leitura & Planejado \\ \hline
+M5 & Aplicação a repositórios autorizados da Empresa A & Planejado \\ \hline
 \end{tabularx}
 \endgroup
 \legend{Fonte: elaboração do autor.}
@@ -259,7 +260,7 @@ Segundo \citeonline{zangirolami2018}, em estudos observacionais, os fenômenos s
 \subsection{Apreciação por Especialistas}
 \label{met-apreciacao}
 
-Os pareceres serão apreciados por especialistas em segurança de software atuantes no mercado, como previsto na seção~\ref{1-metodologia}. A participação será voluntária e ocorrerá mediante Termo de Consentimento Livre e Esclarecido (TCLE), cujo roteiro é apresentado no Apêndice~\ref{ap-tcle}. Cada especialista receberá o parecer acompanhado das evidências citadas, das consultas P2P relacionadas, dos trechos documentais e das regras aplicadas. Ele não repetirá a auditoria, e sim julgará se o parecer é claro, se decorre das evidências e se está apoiado nas fontes citadas.
+Os pareceres serão apreciados por especialistas em segurança de software atuantes no mercado, como previsto na seção~\ref{1-metodologia}. A participação será voluntária e ocorrerá mediante Termo de Consentimento Livre e Esclarecido (TCLE), cujo roteiro é apresentado no Apêndice~\ref{ap-tcle}. Cada especialista receberá o parecer, apresentado na tela descrita na seção~\ref{st-nextjs}, acompanhado das evidências citadas, das consultas P2P relacionadas, dos trechos documentais e das regras aplicadas. Ele não repetirá a auditoria, e sim julgará se o parecer é claro, se decorre das evidências e se está apoiado nas fontes citadas.
 % PENDENTE: [INSERIR NÚMERO E PERFIL DOS ESPECIALISTAS]. Decidir com a orientação.
 
 O instrumento de apreciação, apresentado no Apêndice~\ref{ap-instrumento} como proposta, reúne três partes. Na primeira, o especialista indica seu grau de concordância com afirmações sobre a clareza, a coerência e a fundamentação do parecer, em uma escala de cinco pontos. Na segunda, ele indica se a recomendação é adequada às evidências, com as opções sim, em parte e não, ou declara que o material não é suficiente para julgar. Na terceira, um campo aberto recebe comentários, que serão agrupados por tema a partir dos três critérios do instrumento.
@@ -389,9 +390,9 @@ A Tabela~\ref{tab-atividades2} apresenta as atividades da segunda etapa, todas a
 \hline
 \textbf{Atividade} & \textbf{Descrição} & \textbf{Insumo previsto} \\ \hline
 Corrigir os apontamentos da banca & Ajustes a partir das sugestões recebidas na primeira etapa & Monografia corrigida \\ \hline
-Desenvolver a solução & Marcos M1 a M3, conforme as seções~\ref{met-poc} e~\ref{met-desenvolvimento} & Projeto piloto \\ \hline
+Desenvolver a solução & Marcos M1 a M4, conforme as seções~\ref{met-poc} e~\ref{met-desenvolvimento} & Projeto piloto \\ \hline
 Atualizar os capítulos 1 a 5 & Revisão do texto conforme a evolução do trabalho & Capítulos atualizados \\ \hline
-Realizar as auditorias & Marco M4, em repositórios autorizados, conforme a seção~\ref{met-analise} & Registros das auditorias e pareceres \\ \hline
+Realizar as auditorias & Marco M5, em repositórios autorizados, conforme a seção~\ref{met-analise} & Registros das auditorias e pareceres \\ \hline
 Conduzir a apreciação & Aplicação do instrumento de apreciação, mediante TCLE & Respostas dos especialistas \\ \hline
 Analisar os resultados & Tratamento dos dados e redação da análise & Capítulo de análise de resultados \\ \hline
 Redigir a conclusão & Fechamento e revisão da monografia & Monografia final \\ \hline

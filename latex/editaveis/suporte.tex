@@ -7,7 +7,7 @@
 \chapter{Suporte Tecnológico}
 \label{cap-suporte-tecnologico}
 
-Com foco nas ferramentas que viabilizam o projeto piloto da arquitetura multiagente P2P semi-centralizada, cujos conceitos foram apresentados no Capítulo~\ref{cap-referencial-teorico}, o capítulo começa apresentando as tecnologias de desenvolvimento (seção~\ref{st-desenvolvimento}), cobrindo, dentre outros tópicos, a plataforma de agentes SPADE, o modelo de linguagem executado localmente e as ferramentas de análise, com os motivos da escolha das ferramentas centrais. Na sequência, há menção às ferramentas de modelagem (seção~\ref{st-modelagem}), e há um olhar ainda para as ferramentas de apoio à pesquisa e à escrita (seção~\ref{st-tcc}). Por fim, a seção~\ref{st-resumo} resume o capítulo, reunindo as ferramentas, suas finalidades e versões em uma tabela.
+Com foco nas ferramentas que viabilizam o projeto piloto da arquitetura multiagente P2P semi-centralizada, cujos conceitos foram apresentados no Capítulo~\ref{cap-referencial-teorico}, o capítulo começa apresentando as tecnologias de desenvolvimento (seção~\ref{st-desenvolvimento}), cobrindo, dentre outros tópicos, a plataforma de agentes SPADE, o modelo de linguagem executado localmente, as ferramentas de análise e a interface de apresentação dos pareceres, com os motivos da escolha das ferramentas centrais. Na sequência, há menção às ferramentas de modelagem (seção~\ref{st-modelagem}), e há um olhar ainda para as ferramentas de apoio à pesquisa e à escrita (seção~\ref{st-tcc}). Por fim, a seção~\ref{st-resumo} resume o capítulo, reunindo as ferramentas, suas finalidades e versões em uma tabela.
 
 \section{Tecnologias de Desenvolvimento}
 \label{st-desenvolvimento}
@@ -39,10 +39,13 @@ O modelo de agente do SPADE combina o mecanismo de conexão com a plataforma, o 
 
 O despachante de mensagens funciona como um carteiro, que entrega cada mensagem recebida à fila do comportamento a que ela se destina e coloca no fluxo de comunicação as mensagens enviadas. Para isso, cada comportamento declara um modelo de mensagem (\textit{template}) com os tipos de mensagem que deseja receber \cite{spadeModel}. As mensagens podem carregar metadados FIPA, representados nos formulários de dados do XMPP \cite{spadeDocs}.
 
-% R8: a frase sobre a interface web saiu, pois esse recurso não é usado na proposta.
+% R15: a interface web voltou ao texto, no parágrafo depois da execução, porque passou a ser usada pelo Orquestrador.
 Um agente pode executar vários comportamentos ao mesmo tempo. A plataforma oferece cinco tipos predefinidos. Os comportamentos cíclico e periódico servem a tarefas repetitivas, os de execução única e de tempo limite servem a tarefas ocasionais, e a máquina de estados finitos permite compor comportamentos mais complexos \cite{spadeModel}. Além da troca de mensagens, cada agente mantém uma lista de contatos e recebe, em tempo real, notificações sobre a presença deles, isto é, se estão disponíveis ou indisponíveis para receber mensagens \cite{spadePresence}.
 
 Quanto à execução, o código de um agente roda dentro de um laço assíncrono, iniciado pela função \texttt{spade.run()}. Os agentes dependem de um servidor XMPP em funcionamento, que pode ser o servidor embutido do SPADE, iniciado junto com os agentes ou pelo comando \texttt{spade run}, ou um servidor XMPP dedicado \cite{spadeUsage}.
+
+% R15 (24 nov. 2026): interface web e rotas próprias, conferidas no código (spade/web.py) e na documentação da versão 4.1.4.
+Cada agente também pode iniciar uma interface \textit{web}, que, por padrão, exibe seus comportamentos, seus contatos e suas mensagens e permite, por exemplo, parar o agente e enviar mensagens a um contato. O mesmo módulo permite registrar rotas próprias, associadas a controladores que podem enviar mensagens e iniciar ou encerrar comportamentos do agente, e devolver as respostas em formato JSON \cite{spadeWeb}. No projeto piloto, esse recurso será usado pelo Orquestrador, que receberá por essas rotas os pedidos de auditoria e devolverá o andamento de cada uma e o parecer, como descrito na seção~\ref{st-nextjs}. Como a interface padrão permite parar o agente e enviar mensagens, a porta do Orquestrador ficará restrita à rede interna dos contêineres (seção~\ref{st-docker}).
 
 Na arquitetura descrita por \citeonline{palanca2020}, os servidores XMPP formam uma federação aberta, em que um servidor pode se comunicar com qualquer outro, como ocorre com os servidores de correio eletrônico. Assim, as mensagens chegam ao destinatário independentemente do servidor a que ele está conectado. A Figura~\ref{fig-spade-xmpp} reproduz essa arquitetura, em que as linhas contínuas ligam os clientes (pessoas ou agentes) a seus servidores, e as linhas tracejadas ligam os servidores entre si.
 
@@ -60,6 +63,7 @@ Os autores descrevem três formas de configurar o servidor para uma aplicação 
 \begin{itemize}
 \item \textbf{Linguagem única.} Por ser escrito em Python, o SPADE permite que os agentes e os adaptadores das ferramentas de análise sejam escritos na mesma linguagem.
 \item \textbf{Identidade dos agentes.} Como cada agente se conecta ao servidor com uma identidade própria, a origem de cada mensagem pode ser registrada, o que apoia a rastreabilidade das consultas entre os especialistas.
+\item \textbf{Interface \textit{web}.} Cada agente pode expor rotas HTTP próprias, o que permite ao Orquestrador receber os pedidos de auditoria sem um servidor adicional.
 \item \textbf{Execução assíncrona.} Os comportamentos assíncronos permitem que um agente aguarde a resposta de uma consulta ou o término de uma ferramenta sem interromper os demais agentes.
 \end{itemize}
 
@@ -137,19 +141,27 @@ Neste trabalho, poderá ser usado tanto sobre os arquivos do repositório quanto
 % R9: observação nova sobre o envio de dados a serviços externos.
 Diferentemente do Semgrep, essas ferramentas consultam bases de vulnerabilidades mantidas por terceiros. Essa troca de informações será considerada nas condições de acesso aos dados da Empresa A.
 
+% R15: subseção nova. Next.js escolhido pelo autor por ser a ferramenta oficial da Empresa A para front-end.
+\subsection{Next.js}
+\label{st-nextjs}
+
+O Next.js é um \textit{framework} React para a construção de aplicações \textit{web} completas, em que os componentes React constroem a interface e o Next.js acrescenta recursos e otimizações, além de configurar automaticamente ferramentas de mais baixo nível, como empacotadores e compiladores \cite{nextjsDocs}. Entre esses recursos estão os manipuladores de rota (\textit{Route Handlers}), que permitem criar tratadores próprios para as requisições de uma rota, com as interfaces padrão de requisição e de resposta da \textit{web} \cite{nextjsRouteHandlers}.
+
+Para o desenvolvimento deste trabalho, o Next.js será utilizado na tela de solicitação das auditorias e de apresentação dos pareceres. Nessa tela, a pessoa escolherá um dos repositórios autorizados e a versão a examinar, acompanhará o andamento da auditoria e lerá o parecer. Os pedidos do navegador serão recebidos pelos manipuladores de rota, no servidor do Next.js, e repassados às rotas \textit{web} do Orquestrador (seção~\ref{st-spade}), de modo que nem a porta do Orquestrador nem a credencial de acesso aos repositórios fiquem expostas ao navegador. A tela apenas apresentará o parecer em JSON produzido pelo Agente Auditor, sem calcular a recomendação. A escolha dessa ferramenta para o trabalho em questão deveu-se principalmente ao fato de ela ser a ferramenta oficial da Empresa A para o desenvolvimento de interfaces (\textit{front-end}).
+
 % R8: subseção nova. A aplicação inteira será executada em contêineres, por decisão do autor.
 \subsection{Docker e Docker Compose}
 \label{st-docker}
 
 O Docker é uma plataforma aberta para desenvolver, distribuir e executar aplicações. Com ele, uma aplicação é empacotada e executada em um ambiente isolado, o contêiner. Cada contêiner é criado a partir de uma imagem, isto é, um modelo somente de leitura com as instruções para criá-lo \cite{dockerOverview}. O Docker Compose define e executa aplicações com múltiplos contêineres, reunindo serviços, redes e volumes em um arquivo YAML \cite{dockerCompose}.
 
-No projeto piloto, os agentes, o Prosody, o SonarQube, as ferramentas de análise e o Ollama serão executados em contêineres, reunidos pelo Docker Compose em um único arquivo, o que permite reproduzir o ambiente em máquinas de maior capacidade. Para que o Ollama use a placa de vídeo dentro do contêiner, é necessário o NVIDIA Container Toolkit \cite{ollamaDocker}.
+No projeto piloto, os agentes, o Prosody, o SonarQube, as ferramentas de análise, o Ollama e a tela em Next.js serão executados em contêineres, reunidos pelo Docker Compose em um único arquivo, o que permite reproduzir o ambiente em máquinas de maior capacidade. Apenas a tela em Next.js será acessada pelo navegador, e os demais serviços, inclusive as rotas \textit{web} do Orquestrador, ficarão restritos à rede interna dos contêineres. Para que o Ollama use a placa de vídeo dentro do contêiner, é necessário o NVIDIA Container Toolkit \cite{ollamaDocker}.
 % CONFIRMAR: o motivo da reprodutibilidade foi deduzido da decisão do autor. Acrescente outros, se houver.
 
 \subsection{Git}
 \label{st-git}
 
-O Git é um sistema de controle de versões de código aberto, disponibilizado sob a licença GPL 2.0, que conserva o histórico dos repositórios e permite relacionar o código a uma revisão identificada \cite{gitAbout}. Para o desenvolvimento deste trabalho, o Git será utilizado no versionamento do código do projeto piloto e na identificação do \textit{commit} examinado em cada auditoria, o que fixará a versão do repositório a que os achados se referem.
+O Git é um sistema de controle de versões de código aberto, disponibilizado sob a licença GPL 2.0, que conserva o histórico dos repositórios e permite relacionar o código a uma revisão identificada \cite{gitAbout}. Para o desenvolvimento deste trabalho, o Git será utilizado no versionamento do código do projeto piloto e na identificação do \textit{commit} examinado em cada auditoria, o que fixará a versão do repositório a que os achados se referem. Na Empresa A, os repositórios normalmente são mantidos de forma privada no GitHub. Por isso, o Orquestrador os acessará com uma credencial somente de leitura, restrita aos repositórios autorizados e mantida no ambiente do contêiner, e não no navegador.
 
 % R8: ferramentas descritas como ferramentas, em tópicos, e não pelos diagramas.
 \section{Ferramentas de Modelagem}
@@ -179,7 +191,7 @@ Para a redação da monografia, a organização das referências e a comunicaç�
 \section{Resumo do Capítulo}
 \label{st-resumo}
 
-Neste capítulo, foram apresentadas as tecnologias de desenvolvimento, de modelagem e de apoio à pesquisa. O SPADE e o XMPP sustentarão os agentes e suas mensagens, e o SonarQube e o Semgrep serão as fontes dos achados de qualidade e de segurança. O SPADE-LLM e o Ollama levarão o modelo de linguagem ao agente de Requisitos e Documentação, e o Docker reunirá os serviços em contêineres. A análise de dependências e o agente de Requisitos e Documentação serão integrados nas etapas seguintes. A Tabela~\ref{quadro-tecnologias} resume a finalidade, o link e a versão de cada ferramenta.
+Neste capítulo, foram apresentadas as tecnologias de desenvolvimento, de modelagem e de apoio à pesquisa. O SPADE e o XMPP sustentarão os agentes e suas mensagens, e o SonarQube e o Semgrep serão as fontes dos achados de qualidade e de segurança. O SPADE-LLM e o Ollama levarão o modelo de linguagem ao agente de Requisitos e Documentação, o Next.js apresentará os pareceres, e o Docker reunirá os serviços em contêineres. A análise de dependências e o agente de Requisitos e Documentação serão integrados nas etapas seguintes. A Tabela~\ref{quadro-tecnologias} resume a finalidade, o link e a versão de cada ferramenta.
 
 \begin{table}[htbp]
 \centering
@@ -208,6 +220,7 @@ SonarScanner CLI & Envio das análises ao SonarQube & \href{https://docs.sonarso
 Semgrep & Achados de segurança estática & \href{https://semgrep.dev/}{Acesso} & A registrar \\
 pip-audit, npm audit, Composer audit & Vulnerabilidades em dependências & \href{https://github.com/pypa/pip-audit}{Acesso} & Candidatas \\
 Trivy & Ampliação da cobertura & \href{https://trivy.dev/}{Acesso} & Candidata \\
+Next.js & Solicitação das auditorias e apresentação dos pareceres & \href{https://nextjs.org/}{Acesso} & A registrar \\
 Docker e Docker Compose & Execução dos serviços em contêineres & \href{https://docs.docker.com/}{Acesso} & A registrar \\
 Git & Versionamento e identificação do \textit{commit} & \href{https://git-scm.com/}{Acesso} & A registrar \\ \hline
 \multicolumn{4}{l}{\textit{Modelagem}} \\ \hline
