@@ -47,7 +47,7 @@ Esta pesquisa é predominantemente qualitativa. A análise se apoiará na leitur
 
 Segundo \citeonline{gil2002}, a pesquisa exploratória busca maior familiaridade com um problema, para torná-lo mais explícito, enquanto a pesquisa descritiva descreve as características de uma população ou de um fenômeno, com técnicas padronizadas de coleta, como a observação sistemática.
 
-Esta pesquisa é exploratória e descritiva. É exploratória porque o portfólio da Empresa A, a segurança de software e os sistemas multiagentes são temas em estudo pelo autor, e a solução segue um paradigma ainda pouco aplicado a esse problema. É descritiva porque cada auditoria realizada pelo projeto piloto será documentada, com seus achados, suas interações e seu parecer.
+Esta pesquisa é exploratória e descritiva. É exploratória porque o problema ainda é pouco explícito, isto é, a auditoria de um portfólio de automações por agentes especialistas segue um paradigma ainda pouco aplicado a esse problema, e o portfólio da Empresa A ainda será caracterizado. É descritiva porque cada auditoria realizada pelo projeto piloto será documentada, com seus achados, suas interações e seu parecer.
 
 \subsection{Natureza de Pesquisa}
 \label{met-natureza}
@@ -255,7 +255,7 @@ Segundo \citeonline{morshed2009}, em estudos descritivos de um conjunto de casos
 \subsection{Coleta dos Registros}
 \label{met-coleta}
 
-Segundo \citeonline{zangirolami2018}, em estudos observacionais, os fenômenos são observados de maneira sistemática e padronizada, sem intervenção do pesquisador. Assim, todas as auditorias usarão as mesmas versões das ferramentas, das regras, do modelo de linguagem e da solução, e qualquer mudança será registrada. Para cada execução, serão conservados a identificação do repositório e do \textit{commit}, os achados com o relatório original de cada ferramenta, as consultas P2P com a conclusão do especialista antes e depois da consulta, o contexto documental utilizado e o parecer, com a regra que originou cada item. A ficha de registro das auditorias é apresentada no Apêndice~\ref{ap-ficha}, como proposta.
+Segundo \citeonline{zangirolami2018}, em estudos observacionais, os fenômenos são observados de maneira sistemática e padronizada, sem intervenção do pesquisador. Como o pesquisador desenvolve a solução, essa condição é adaptada, isto é, ele não modificará os repositórios nem a configuração da solução durante a coleta. Assim, todas as auditorias usarão as mesmas versões das ferramentas, das regras, do modelo de linguagem e da solução, e qualquer mudança será registrada. Para cada execução, serão conservados a identificação do repositório e do \textit{commit}, os achados com o relatório original de cada ferramenta, as consultas P2P com a conclusão do especialista antes e depois da consulta, o contexto documental utilizado e o parecer, com a regra que originou cada item. A ficha de registro das auditorias é apresentada no Apêndice~\ref{ap-ficha}, como proposta.
 
 \subsection{Apreciação por Especialistas}
 \label{met-apreciacao}
@@ -294,7 +294,7 @@ Apreciação & Respostas sobre clareza, coerência e fundamentação, e julgamen
 \legend{Fonte: elaboração do autor.}
 \end{table}
 
-A taxa de acerto mencionada na seção~\ref{1-metodologia} será operacionalizada como taxa de adequação percebida, isto é, a proporção de julgamentos sim entre os julgamentos sim, em parte e não. O nome reflete o que a medida alcança, pois o especialista julgará a recomendação diante do material apresentado, e não diante de um gabarito sobre as vulnerabilidades de cada repositório. Por fim, a classificação de cada achado será confrontada com a referência indicada pela ferramenta, como a CWE e o OWASP Top 10 \cite{cweAbout,owaspTop10}, e as regras do Agente Auditor, com a política, a lei ou a norma que lhes deu origem, como a LGPD \cite{lgpd2018}.
+A taxa de acerto mencionada na seção~\ref{1-metodologia} será operacionalizada como taxa de adequação percebida, isto é, a proporção de julgamentos sim entre os julgamentos sim, em parte e não. O nome reflete o que a medida alcança, pois o especialista julgará a recomendação diante do material apresentado, e não diante de um gabarito sobre as vulnerabilidades de cada repositório. Por fim, a classificação de cada achado será confrontada com a referência indicada pela ferramenta, como a CWE e o OWASP Top 10 \cite{cweAbout,owaspTop10}, e as regras do Agente Auditor, com a política, a lei ou a norma que lhes deu origem, como a LGPD \cite{lgpd2018}. A conferência da classificação verifica sua coerência com a referência, e não comprova que o achado corresponda a uma vulnerabilidade explorável no repositório.
 % PENDENTE (decisão com a orientação): manter "taxa de acerto" na introdução ou trocar pelo termo "adequação percebida".
 
 \subsection{Limitações do Estudo}
@@ -329,7 +329,7 @@ A Tabela~\ref{tab-atividades1} apresenta as atividades da primeira etapa, com a 
 \hline
 \textbf{Atividade} & \textbf{Descrição} & \textbf{Situação} & \textbf{Insumo gerado} \\ \hline
 Definir o tema & Escolha do tema e do recorte, com o apoio da orientação & Concluída & Título e recorte do trabalho \\ \hline
-Realizar a pesquisa bibliográfica & Protocolo de busca e de seleção (seção~\ref{met-exploratorio}) & Concluída & Planilha de levantamento e base de referências \\ \hline
+Realizar a pesquisa bibliográfica & Protocolo de busca e de seleção (seção~\ref{met-exploratorio}) & Triagem concluída, leitura em andamento & Planilha de levantamento e base de referências \\ \hline
 Contextualizar o trabalho & Contextualização, questão de pesquisa, justificativa e objetivos & Em revisão & Capítulo~1 \\ \hline
 Escrever o referencial teórico & Conceitos e trabalhos relacionados & Em revisão & Capítulo~\ref{cap-referencial-teorico} \\ \hline
 Elaborar o suporte tecnológico & Seleção e descrição das ferramentas & Em revisão & Capítulo~\ref{cap-suporte-tecnologico} \\ \hline
